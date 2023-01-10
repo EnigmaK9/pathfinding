@@ -76,8 +76,8 @@ for fila in matriz:
 # inicializamos la posición inicial de A1 y A2 en la matriz
 A1_posicion_inicial = (4, 9)
 A1_posicion_destino = (4, 11)
-A2_posicion_inicial = (19, 19)
-A2_posicion_destino = (9, 4)
+A2_posicion_inicial = (3, 9)
+A2_posicion_destino = (4, 11)
 
 # marcamos las posiciones iniciales de A1 y A2 en la matriz
 matriz[A1_posicion_inicial[0]][A1_posicion_inicial[1]] = 2
