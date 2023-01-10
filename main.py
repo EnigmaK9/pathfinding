@@ -5,8 +5,8 @@ from termcolor import colored
 
 
 print("============================================================")
-print(" paso 1, Inicializamos la matriz con 20 filas y 20 columnas, todas con valor 0")
-print("Generamos 24 obstáculos aleatorios")
+print("Paso 1: inicializamos la matriz 20x20")
+print("Generamos los obstáculos")
 print("============================================================")
 # inicializamos la matriz con 20 filas y 20 columnas, todas con valor 0
 matriz = [[0 for _ in range(20)] for _ in range(20)]
@@ -75,9 +75,9 @@ for fila in matriz:
 
 # inicializamos la posición inicial de A1 y A2 en la matriz
 A1_posicion_inicial = (4, 9)
-A1_posicion_destino = (4, 11)
+A1_posicion_destino = (19, 19)
 A2_posicion_inicial = (3, 9)
-A2_posicion_destino = (4, 11)
+A2_posicion_destino = (19, 19)
 
 # marcamos las posiciones iniciales de A1 y A2 en la matriz
 matriz[A1_posicion_inicial[0]][A1_posicion_inicial[1]] = 2
@@ -151,11 +151,11 @@ distancias_A2 = aplicar_dijkstra(matriz, A2_posicion_inicial, A2_posicion_destin
 print("============================================================")
 print("Usamos la funcion para imprimir la distancia obtenida en A1")
 print("============================================================")
-print(distancias_A1)
+print('\n'.join(map(str, distancias_A1)))
 print("============================================================")
 print("Usamos la funcion para imprimir la distancia obtenida en A2")
 print("============================================================")
-print(distancias_A2)
+print('\n'.join(map(str, distancias_A2)))
 
 #Esto debería calcular las distancias mínimas desde la posición inicial hasta la posición de destino para cada agente, utilizando el algoritmo de Dijkstra.
 
