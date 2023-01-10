@@ -1,5 +1,7 @@
 import random
 import heapq
+from termcolor import colored
+
 
 
 print("============================================================")
@@ -10,26 +12,72 @@ print("============================================================")
 matriz = [[0 for _ in range(20)] for _ in range(20)]
 
 # agregamos algunos obstáculos, marcados con el valor 1
-#matriz[4][7] = 1
-#matriz[5][9] = 1
-#matriz[6][5] = 1
-#matriz[8][2] = 1
-#matriz[9][12] = 1
-# generamos 24 obstáculos aleatorios
-for _ in range(24):
-    fila = random.randint(0, 19)
-    columna = random.randint(0, 19)
-    matriz[fila][columna] = 1
+matriz[4][2] = 1
 
-# imprimimos la matriz
+matriz[4][3] = 1
+
+matriz[3][4] = 1
+
+
+matriz[4][6] = 1
+
+matriz[5][7] = 1
+matriz[6][7] = 1
+matriz[7][7] = 1
+
+matriz[5][8] = 1
+matriz[6][8] = 1
+matriz[7][8] = 1
+matriz[8][8] = 1
+matriz[9][8] = 1
+matriz[10][8] = 1
+
+matriz[5][9]  = 1
+matriz[9][9]  = 1
+matriz[10][9] = 1
+matriz[10][9] = 1
+matriz[11][9] = 1
+matriz[12][9] = 1
+matriz[13][9] = 1
+
+matriz[4][10] = 1
+
+matriz[1][11] = 1
+matriz[2][11] = 1
+matriz[3][11] = 1
+matriz[4][11] = 1
+
+matriz[7][12] = 1
+matriz[8][12] = 1
+
+matriz[7][13] = 1
+matriz[8][13] = 1
+
+# generamos 24 obstáculos aleatorios
+
+#for _ in range(24):
+#    fila = random.randint(0, 19)
+#    columna = random.randint(0, 19)
+#    matriz[fila][columna] = 1
+# Cambiamos a color rojo los 1 para una mejor visualización
 for fila in matriz:
-    print(fila)
+    for num in fila:
+        if num == 1:
+            print(colored(num, 'red'), end=' ')
+        else:
+            print(num, end=' ')
+    print()
+# imprimimos la matriz sin color rojo
+#for fila in matriz:
+#    print(fila)
 
 # Para inicializar la posición inicial de A1 y A2 en la matriz, podemos agregar una tupla con las coordenadas (fila, columna) a cada agente. Luego, podemos marcar estas posiciones en la matriz con un valor específico, por ejemplo 2 para A1 y 3 para A2.
 
 # inicializamos la posición inicial de A1 y A2 en la matriz
-A1_posicion_inicial = (0, 0)
+A1_posicion_inicial = (4, 9)
+A1_posicion_destino = (4, 11)
 A2_posicion_inicial = (19, 19)
+A2_posicion_destino = (9, 4)
 
 # marcamos las posiciones iniciales de A1 y A2 en la matriz
 matriz[A1_posicion_inicial[0]][A1_posicion_inicial[1]] = 2
@@ -45,8 +93,6 @@ for fila in matriz:
     print(fila)
 
 # Paso 3, implementa el algoritmo de Dijkstra
-
-import heapq
 
 # define una función para calcular el vecino más cercano
 def obtener_vecino_mas_cercano(posicion, matriz):
@@ -97,11 +143,18 @@ def aplicar_dijkstra(matriz, posicion_inicial, posicion_destino):
     return distancias
 
 # usamos la función para aplicar Dijkstra a cada agente
-distancias_A1 = aplicar_dijkstra(matriz, posicion_inicial_A1, posicion_destino_A1)
-distancias_A2 = aplicar_dijkstra(matriz, posicion_inicial_A2, posicion_destino_A2)
+
+distancias_A1 = aplicar_dijkstra(matriz, A1_posicion_inicial, A1_posicion_destino)
+distancias_A2 = aplicar_dijkstra(matriz, A2_posicion_inicial, A2_posicion_destino)
 
 # imprimimos las distancias obtenidas
+print("============================================================")
+print("Usamos la funcion para imprimir la distancia obtenida en A1")
+print("============================================================")
 print(distancias_A1)
+print("============================================================")
+print("Usamos la funcion para imprimir la distancia obtenida en A2")
+print("============================================================")
 print(distancias_A2)
 
 #Esto debería calcular las distancias mínimas desde la posición inicial hasta la posición de destino para cada agente, utilizando el algoritmo de Dijkstra.
