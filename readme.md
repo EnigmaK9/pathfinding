@@ -1,10 +1,21 @@
 # Pathfinding
-Este código crea una matriz de 20x20 y asigna valores aleatorios de 0 y 1 para generar obstáculos en la matriz. Luego, se establecen las posiciones iniciales de dos agentes A1 y A2 en la matriz con los valores 2 y 3 respectivamente. Finalmente, se implementa el algoritmo de Dijkstra en una función para calcular el camino más corto desde una posición inicial a una posición destino.
-## Paso 1
-En el primer paso, se crea una matriz de 20x20 y se asignan aleatoriamente 24 obstáculos con el valor 1, y se imprime la matriz.
-## Paso 2
-En el segundo paso, se establecen las posiciones iniciales de los agentes A1 y A2 y se marcan en la matriz con los valores 2 y 3 respectivamente.
-## Paso 3
-En el tercer paso, se implementa una función llamada "aplicar_dijkstra" que utiliza el algoritmo de Dijkstra para encontrar el camino más corto entre una posición inicial y una posición destino. Esto se logra a través del uso de una cola de prioridad para explorar el vecino más cercano y actualizando la distancia más corta para cada celda en la matriz.
+Realizar un programa que resuelva el problema de pathfinding para un mapa de 20x20 celdas con
+al menos 40 celdas obstáculo. El programa deberá recibir como entrada la posición inicial de dos
+agentes A1 y A2, y encontrar el camino mínimo para llegar cada uno a su destino. El algoritmo de
+pathfinding a elegir se deja a criterio del alumno, así como el lenguaje de programación a emplear
+y el modo de visualización (gráfico o en consola).
 
-
+## Paso 1.
+Inicializar la matriz de 20x20 celdas, con un valor de 0 en cada celda.
+## Paso 2.
+Generar al menos 40 celdas obstáculo de manera aleatoria o fija en el mapa y marcarlas con el valor 1.
+## Paso 3.
+Recibir como entrada la posición inicial de dos agentes A1 y A2, y también las posiciones finales para cada uno.
+## Paso 4.
+Inicializar las posiciones iniciales de A1 y A2 en el mapa con valores distintos (por ejemplo, 2 para A1 y 3 para A2).
+## Paso 5.
+Elegir un algoritmo de pathfinding (como A*, Dijkstra, BFS, etc.) y aplicarlo para encontrar el camino mínimo para cada agente desde su posición inicial hasta su destino.
+## Paso 6.
+Almacenar los caminos encontrados para A1 y A2.
+## Paso 7.
+Visualizar los caminos encontrados en el mapa, ya sea en una interfaz gráfica o en consola.
