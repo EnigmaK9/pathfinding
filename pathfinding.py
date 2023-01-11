@@ -18,16 +18,16 @@ pygame.display.set_caption("Camino encontrado en el mapa")
 matriz = [[0 for _ in range(20)] for _ in range(20)]
 
 # Generamos obstáculos
-for i in range(40):
+for i in range(120):
     fila = random.randint(0, 19)
     columna = random.randint(0, 19)
     matriz[fila][columna] = 1
 # Asignamos las posiciones iniciales y finales de A1 y A2
 
-A1_posicion_inicial = (19, 0)
-A1_posicion_destino = (10, 10)
-A2_posicion_inicial = (0, 0)
-A2_posicion_destino = (10, 10)
+A1_posicion_inicial = (1, 0)
+A1_posicion_destino = (1, 17)
+A2_posicion_inicial = (19, 19)
+A2_posicion_destino = (1, 17)
 
 #Marcamos las posiciones iniciales y finales en la matriz
 matriz[A1_posicion_inicial[0]][A1_posicion_inicial[1]] = 2
