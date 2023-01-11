@@ -1,3 +1,4 @@
+import sys
 import random
 import heapq
 import pygame
@@ -23,10 +24,31 @@ for i in range(40):
     matriz[fila][columna] = 1
 # Asignamos las posiciones iniciales y finales de A1 y A2
 
-A1_posicion_inicial = (4, 9)
-A1_posicion_destino = (5, 10)
-A2_posicion_inicial = (3, 9)
-A2_posicion_destino = (5, 10)
+A1_posicion_inicial = (19, 0)
+A1_posicion_destino = (19, 19)
+A2_posicion_inicial = (0, 0)
+A2_posicion_destino = (19, 19)
+print("===========================================")
+
+#Visualizamos A1 y A2
+for fila in matriz:
+    for valor in fila:
+        if valor == 0:
+            print(".", end=" ")
+        elif valor == 1:
+            print("#", end=" ")
+        elif valor == 2:
+            print("A1", end=" ")
+        elif valor == 3:
+            print("A2", end=" ")
+        elif valor == "x":
+            print("x", end=" ") 
+        elif valor == "y":
+            print("y", end=" ")   
+    print()
+print("===========================================")
+
+
 #Marcamos las posiciones iniciales y finales en la matriz
 matriz[A1_posicion_inicial[0]][A1_posicion_inicial[1]] = 2
 matriz[A2_posicion_inicial[0]][A2_posicion_inicial[1]] = 3
@@ -87,19 +109,26 @@ def Dijkstra(matriz, inicio, destino):
     return None
 
 camino_A1 = Dijkstra(matriz, A1_posicion_inicial, A1_posicion_destino)
-print("Distancia A1: ", len(camino_A1))
+print("===========================================")
+print("Distancia A1: ", len(camino_A1), "unidades")
+print("===========================================")
 print("Camino A1: ", camino_A1)
 
 camino_A2 = Dijkstra(matriz, A2_posicion_inicial, A2_posicion_destino)
-print("Distancia A2: ", len(camino_A2))
+print("===========================================")
+print("Distancia A2: ", len(camino_A2), "unidades")
+print("===========================================")
 print("Camino A2: ", camino_A2)
+print("===========================================")
 
 #Visualizamos el camino encontrado en la matriz
 #Crear una copia de la matriz original para no alterarla
 
 matriz_caminos = [fila[:] for fila in matriz]
 for x,y in camino_A1:
-    matriz_caminos[x][y] = 'X'
+    matriz_caminos[x][y] = 'x'
+for x,y in camino_A2:
+    matriz_caminos[x][y] = 'y'
 
 for fila in matriz_caminos:
     print(fila)
@@ -115,17 +144,24 @@ camino_A2 = distancia_A1
 matriz_caminos = [fila[:] for fila in matriz]
 
 for i, j in camino_A1:
-    matriz_caminos[i][j] = "X"
-for i, j in camino_A2:
-    matriz_caminos[i][j] = "X"
+    matriz_caminos[i][j] = "x"
+
 camino_A1 = Dijkstra(matriz, A1_posicion_inicial, A1_posicion_destino)
+for i, j in camino_A2:
+    matriz_caminos[i][j] = "y"
 camino_A2 = Dijkstra(matriz, A2_posicion_inicial, A2_posicion_destino)
 
 #Visualizamos los caminos encontrados en el mapa
 #Crear una copia de la matriz original para no alterarla
 matriz_caminos = [fila[:] for fila in matriz]
 
-for fila in matriz:
+print("===========================================")
+for x,y in camino_A1:
+    matriz_caminos[x][y] = 'x'
+for x,y in camino_A2:
+    matriz_caminos[x][y] = 'y'
+    
+for fila in matriz_caminos:
     for valor in fila:
         if valor == 0:
             print(".", end=" ")
@@ -135,40 +171,48 @@ for fila in matriz:
             print("A1", end=" ")
         elif valor == 3:
             print("A2", end=" ")
-        elif valor == "X":
-            print("X", end=" ")    
+        elif valor == "x":
+            print("x", end=" ") 
+        elif valor == "y":
+            print("y", end=" ")   
     print()
     
+print("===========================================")
 # Crear la ventana
 ventana = pygame.display.set_mode((500, 500))
 
 # Cargar las imagenes
 imagen_obstaculo = pygame.image.load("obstaculo.png")
 imagen_agente = pygame.image.load("agente.png")
+imagen_agente2 = pygame.image.load("agente2.png")
 imagen_meta = pygame.image.load("meta.png")
 imagen_camino = pygame.image.load("camino.png")
+imagen_camino2 = pygame.image.load("camino2.png")
+imagen_piso = pygame.image.load("piso.png")
 
 #Dibujar en pantalla
-
 for i, fila in enumerate(matriz_caminos):
     for j, valor in enumerate(fila):
         x = j * 25
         y = i * 25
-if valor == 1:
-    ventana.blit(imagen_obstaculo, (x, y))
-elif valor == 2:
-    ventana.blit(imagen_agente, (x, y))
-elif valor == 3:
-    ventana.blit(imagen_agente, (x, y))
-elif valor == 5:
-    ventana.blit(imagen_meta, (x, y))
-elif valor == 'X':
-    ventana.blit(imagen_camino, (x, y))
-pygame.display.update()
+        if valor == 1:
+            ventana.blit(imagen_obstaculo, (x, y))
+        elif valor == 2:
+            ventana.blit(imagen_agente, (x, y))
+        elif valor == 3:
+            ventana.blit(imagen_agente2, (x, y))
+        elif valor == 5:
+            ventana.blit(imagen_meta, (x, y))
+        elif valor == 'x':
+            ventana.blit(imagen_camino, (x, y))
+        elif valor == 'y':
+            ventana.blit(imagen_camino2, (x, y))
+        elif valor == '0':
+            ventana.blit(imagen_piso, (x, y))
+    pygame.display.update()
 
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:   
-
-            pygame.quit()
-sys.exit()
+                pygame.quit() 
+                sys.exit()
