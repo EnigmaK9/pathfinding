@@ -46,7 +46,7 @@ matriz[1][11] = 1
 matriz[2][11] = 1
 matriz[3][11] = 1
 matriz[4][11] = 1
-
+matriz[0][11] = 1
 matriz[7][12] = 1
 matriz[8][12] = 1
 
@@ -73,11 +73,14 @@ for fila in matriz:
 
 # Para inicializar la posición inicial de A1 y A2 en la matriz, podemos agregar una tupla con las coordenadas (fila, columna) a cada agente. Luego, podemos marcar estas posiciones en la matriz con un valor específico, por ejemplo 2 para A1 y 3 para A2.
 
+# Costo del movimiento 
+costo_movimiento = 1
+
 # inicializamos la posición inicial de A1 y A2 en la matriz
 A1_posicion_inicial = (4, 9)
-A1_posicion_destino = (19, 19)
+A1_posicion_destino = (5, 10)
 A2_posicion_inicial = (3, 9)
-A2_posicion_destino = (19, 19)
+A2_posicion_destino = (5, 10)
 
 # marcamos las posiciones iniciales de A1 y A2 en la matriz
 matriz[A1_posicion_inicial[0]][A1_posicion_inicial[1]] = 2
@@ -86,29 +89,56 @@ matriz[A2_posicion_inicial[0]][A2_posicion_inicial[1]] = 3
 
 # imprimimos la matriz
 print("============================================================")
-print(" paso 2, inicializamos la posición de A1 y A2 en la matriz, A1 tiene el valor de 2 y A3 tiene el valor de 3")
+print(" Paso 2, inicializamos la posición de A1 y A2 en la matriz, A1 tiene el valor de 2 y A3 tiene el valor de 3")
 print("============================================================")
 
 for fila in matriz:
+    for num in fila:
+        if num ==1:
+            print(colored(num,'red'),end=' ')
+        elif num ==2:
+            print(colored(num,'blue'),end=' ')
+        elif num ==3:
+            print(colored(num,'yellow'),end=' ')    
+        else:
+            print(num, end=' ')
     print(fila)
 
 # Paso 3, implementa el algoritmo de Dijkstra
 
-# define una función para calcular el vecino más cercano
-def obtener_vecino_mas_cercano(posicion, matriz):
-    fila, columna = posicion
-    vecinos = []
-    # comprueba los vecinos de la celda actual (arriba, abajo, derecha, izquierda)
-    if fila > 0:
-        vecinos.append((fila - 1, columna))
-    if fila < len(matriz) - 1:
-        vecinos.append((fila + 1, columna))
-    if columna > 0:
-        vecinos.append((fila, columna - 1))
-    if columna < len(matriz[0]) - 1:
-        vecinos.append((fila, columna + 1))
-    return vecinos
+def obtener_vecino_mas_cercano(posicion_inicial, matriz, costo_movimiento):
+    # Inicializamos la distancia de todos los nodos como infinito
+    distancias = [[float('inf') for _ in range(20)] for _ in range(20)]
+    distancias[posicion_inicial[0]][posicion_inicial[1]] = 0
+    predecesores = [[(0,0) for _ in range(20)] for _ in range(20)]
+    # Inicializamos la cola de prioridad con el nodo inicial
+    cola = [(0, posicion_inicial[0], posicion_inicial[1])]
+    heapq.heapify(cola)
+    
+    while cola:
+        # obtenemos el nodo con la distancia mínima
+        distancia, fila, columna = heapq.heappop(cola)
+        vecinos = [(fila+1, columna), (fila-1, columna), (fila, columna+1), (fila, columna-1)]
+        
+        for vecino in vecinos:
+            # Verificamos si el vecino está dentro de los límites de la matriz
+            if vecino[0] < 0 or vecino[0] >= 20 or vecino[1] < 0 or vecino[1] >= 20:
+                continue
+            # Verificamos si el vecino es un obstáculo
+            if matriz[vecino[0]][vecino[1]] == 1:
+                continue
+            # si se encuentra un camino mas corto se actualiza la distancia y el predecesor
+            if distancias[vecino[0]][vecino[1]] > distancias[fila][columna] + costo_movimiento:
+                distancias[vecino[0]][vecino[1]] = distancias[fila][columna] + costo_movimiento
+                predecesores[vecino[0]][vecino[1]] = (fila, columna)
+                heapq.heappush(cola, (distancias[vecino[0]][vecino[1]], vecino[0], vecino[1]))
 
+    # retorna el camino mas corto y la distancia total
+    return predecesores, distancias[19][19]
+
+nearest_neighbor_A1 = obtener_vecino_mas_cercano(A1_posicion_inicial,matriz,costo_movimiento)
+
+# print('\n'.join(map(str, nearest_neighbor_A1)))
 # define una función para aplicar Dijkstra a un agente
 def aplicar_dijkstra(matriz, posicion_inicial, posicion_destino):
     # inicializamos la distancia desde la posición inicial a cada celda con infinito
