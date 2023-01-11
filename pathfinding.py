@@ -25,9 +25,17 @@ for i in range(40):
 # Asignamos las posiciones iniciales y finales de A1 y A2
 
 A1_posicion_inicial = (19, 0)
-A1_posicion_destino = (19, 19)
+A1_posicion_destino = (10, 10)
 A2_posicion_inicial = (0, 0)
-A2_posicion_destino = (19, 19)
+A2_posicion_destino = (10, 10)
+
+#Marcamos las posiciones iniciales y finales en la matriz
+matriz[A1_posicion_inicial[0]][A1_posicion_inicial[1]] = 2
+matriz[A2_posicion_inicial[0]][A2_posicion_inicial[1]] = 3
+matriz[A1_posicion_destino[0]][A1_posicion_destino[1]] = 5
+matriz[A2_posicion_destino[0]][A2_posicion_destino[1]] = 5
+
+
 print("===========================================")
 
 #Visualizamos A1 y A2
@@ -41,19 +49,15 @@ for fila in matriz:
             print("A1", end=" ")
         elif valor == 3:
             print("A2", end=" ")
+        elif valor == 5:
+            print("G", end=" ")
         elif valor == "x":
             print("x", end=" ") 
         elif valor == "y":
             print("y", end=" ")   
     print()
+    
 print("===========================================")
-
-
-#Marcamos las posiciones iniciales y finales en la matriz
-matriz[A1_posicion_inicial[0]][A1_posicion_inicial[1]] = 2
-matriz[A2_posicion_inicial[0]][A2_posicion_inicial[1]] = 3
-matriz[A1_posicion_destino[0]][A1_posicion_destino[1]] = 5
-matriz[A2_posicion_destino[0]][A2_posicion_destino[1]] = 5
 
 # Función para obtener los vecinos de una posición en la matriz
 def vecinos(matriz, current):
@@ -130,8 +134,24 @@ for x,y in camino_A1:
 for x,y in camino_A2:
     matriz_caminos[x][y] = 'y'
 
+print("===========================================")
+#Visualizamos A1 y A2
 for fila in matriz_caminos:
-    print(fila)
+    for valor in fila:
+        if valor == 0:
+            print(".", end=" ")
+        elif valor == 1:
+            print("#", end=" ")
+        elif valor == "x":
+            print("x", end=" ") 
+        elif valor == "y":
+            print("y", end=" ")   
+        elif valor == 2:
+            print("A1", end=" ")
+        elif valor == 3:
+            print("A2", end=" ")
+    print()
+print("===========================================")
 
 # Almacenamos la distancia y el camino encontrado
 distancia_A1 = Dijkstra(matriz, A1_posicion_inicial, A1_posicion_destino)
@@ -190,29 +210,34 @@ imagen_camino = pygame.image.load("camino.png")
 imagen_camino2 = pygame.image.load("camino2.png")
 imagen_piso = pygame.image.load("piso.png")
 
-#Dibujar en pantalla
+#Marcamos las posiciones iniciales y finales en la matriz
+matriz_caminos[A1_posicion_inicial[0]][A1_posicion_inicial[1]] = 2
+matriz_caminos[A2_posicion_inicial[0]][A2_posicion_inicial[1]] = 3
+matriz_caminos[A1_posicion_destino[0]][A1_posicion_destino[1]] = 5
+matriz_caminos[A2_posicion_destino[0]][A2_posicion_destino[1]] = 5
+
+dibujo = {
+    1: imagen_obstaculo,
+    2: imagen_agente,
+    3: imagen_agente2,
+    5: imagen_meta,
+    'x': imagen_camino,
+    'y': imagen_camino2,
+    0: imagen_piso
+}
+
+
+# Dibuja cada celda de matriz_caminos en su posición correspondiente
 for i, fila in enumerate(matriz_caminos):
     for j, valor in enumerate(fila):
         x = j * 25
         y = i * 25
-        if valor == 1:
-            ventana.blit(imagen_obstaculo, (x, y))
-        elif valor == 2:
-            ventana.blit(imagen_agente, (x, y))
-        elif valor == 3:
-            ventana.blit(imagen_agente2, (x, y))
-        elif valor == 5:
-            ventana.blit(imagen_meta, (x, y))
-        elif valor == 'x':
-            ventana.blit(imagen_camino, (x, y))
-        elif valor == 'y':
-            ventana.blit(imagen_camino2, (x, y))
-        elif valor == '0':
-            ventana.blit(imagen_piso, (x, y))
-    pygame.display.update()
+        ventana.blit(dibujo[valor], (x, y))
+
+pygame.display.update()
 
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:   
-                pygame.quit() 
-                sys.exit()
+            pygame.quit() 
+            sys.exit()
