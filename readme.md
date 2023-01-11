@@ -1,4 +1,10 @@
 # Pathfinding
+Realizar un programa que resuelva el problema de pathfinding para un mapa de 20x20 celdas con
+al menos 40 celdas obstáculo. El programa deberá recibir como entrada la posición inicial de dos
+agentes A1 y A2, y encontrar el camino mínimo para llegar cada uno a su destino. El algoritmo de
+pathfinding a elegir se deja a criterio del alumno, así como el lenguaje de programación a emplear
+y el modo de visualización (gráfico o en consola).
+
 ## Paso 1.
 Inicializar la matriz de 20x20 celdas, con un valor de 0 en cada celda.
 ## Paso 2.
