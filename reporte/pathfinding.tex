@@ -1,10 +1,12 @@
-\documentclass[12pt,a4paper]{article}
+\documentclass[12pt]{article}
+\usepackage[letterpaper]{geometry}
 \usepackage{fontenc}
 \usepackage{graphicx}
-\usepackage[spanish]{babel}
+\usepackage[spanish,es-tabla]{babel}
 \usepackage{amssymb}
 \usepackage{amsmath}
-
+\usepackage{graphicx}
+\usepackage{subcaption}
 \title{Pathfinding}
 \author{Padilla Herrera Carlos Ignacio}
 \date{}
@@ -50,12 +52,30 @@ Se recorren sus vecinos, y se actualiza la distancia y el camino si se encuentra
 un camino más corto.
 Finalmente, el algoritmo devuelve el camino más corto entre el nodo inicial y 
 el destino, que se puede encontrar en el diccionario \textit{camino}.
+
 \section{Pruebas}
 \subsection{Pruebas para un agente con un inicio y un destino}
 En esta sección se describen y presentan los resultados de las pruebas realizadas con un agente y un inicio y destino determinado.
 
 \subsection{Pruebas para dos agentes con el mismo destino}
 En esta sección se describen y presentan los resultados de las pruebas realizadas con dos agentes y el mismo destino.
+\begin{figure}
+    \centering
+    \begin{subfigure}{.5\textwidth}
+      \centering
+      \includegraphics[width=.4\linewidth]{agente-mismo-destino.png}
+      \caption{Agentes con el mismo destino en interfaz gráfica con pygame.}
+      
+    \end{subfigure}%
+    \begin{subfigure}{.5\textwidth}
+      \centering
+      \includegraphics[width=.4\linewidth]{agente-mismo-destino-2.png}
+      \caption{Imagen 2}
+      
+    \end{subfigure}
+    \caption{Agentes con el mismo destino, la salida en terminal de consola.}
+    
+    \end{figure}
 
 \subsection{Pruebas para dos agentes con destinos diferentes}
 En esta sección se describen y presentan los resultados de las pruebas realizadas con dos agentes y destinos diferentes.
