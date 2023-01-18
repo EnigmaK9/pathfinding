@@ -1,4 +1,4 @@
-
+import heapq
 from vecinos import vecinos
 
 matriz = None
@@ -27,7 +27,7 @@ def A_star(matriz, inicio, destino):
         # si encontramos el destino
         if current == destino:
             # retornamos el camino
-            return path(current, g_cost)
+            return path(matriz,current, g_cost, inicio)
         # iteramos sobre los vecinos del nodo actual
         for neighbor in vecinos(matriz, current):
             # si el vecino esta en la lista cerrada o es un obstaculo
@@ -46,7 +46,7 @@ def A_star(matriz, inicio, destino):
     # si no se encuentra un camino retornamos None
     return None
 
-def path(current, g_cost):
+def path(matriz, current, g_cost, inicio):
     # creamos una lista para almacenar el camino encontrado
     camino = [current]
     # mientras el nodo actual no sea el inicio
@@ -56,8 +56,6 @@ def path(current, g_cost):
             # si el vecino tiene un costo g menor
             if g_cost.get(neighbor, float('inf')) <= g_cost.get(current, float('inf')):
                 current = neighbor
-                # actualizamos el nodo actual
-                current = neighbor
                 # agregamos el vecino al camino
                 camino.append(current)
     # retornamos el camino encontrado
@@ -65,51 +63,3 @@ def path(current, g_cost):
 
 
 
-
-"""
-camino_star_A1 = A_star(matriz, A1_posicion_inicial, A1_posicion_destino)
-camino_star_A2 = A_star(matriz,A2_posicion_inicial, A2_posicion_destino)
-camino_dijkstra = Dijkstra(matriz, A1_posicion_inicial, A1_posicion_destino)
-
-if camino_star_A1:
-    for pos in camino_star_A1:
-        matriz_star = matriz
-        matriz_star[pos[0]][pos[1]] = "x"
-if camino_star_A2:
-    for pos in camino_star_A2:
-        matriz_star = matriz
-        matriz_star[pos[0]][pos[1]] = "y"
-
-for x, y in camino_A1:
-    matriz_star[x][y] = 'x'
-for x, y in camino_A2:
-    matriz_star[x][y] = 'y'
-    
-print_module.print_path(matriz_star)
-
-camino_A1_star = A_star(matriz, A1_posicion_inicial, A1_posicion_destino)
-print("===========================================")
-print("A*.Distancia A1: ", len(camino_A1_star), "unidades")
-print("===========================================")
-print("A*.Camino A1: ", camino_A1_star)
-
-camino_A2_star = A_star(matriz, A2_posicion_inicial, A2_posicion_destino)
-print("===========================================")
-print("A*.Distancia A2: ", len(camino_A2_star), "unidades")
-print("===========================================")
-print("A*.Camino A2: ", camino_A2_star)
-print("===========================================")
-
-
-# Visualizamos el camino encontrado en la matriz
-# Crear una copia de la matriz original para no alterarla
-
-matriz_star = [fila[:] for fila in matriz]
-for x, y in camino_A1_star:
-    matriz_star[x][y] = 'x'
-for x, y in camino_A2_star:
-    matriz_star[x][y] = 'y'
-    
-print_module.print_path(matriz_star)
-
-"""

@@ -7,13 +7,10 @@ from tkinter import simpledialog
 import print_module
 from dijkstra_module import Dijkstra
 from a_star_module import A_star
-from a_star_module import manhattan
-from a_star_module import path
-from vecinos import vecinos
 from obstaculos import crear_obstaculos_fijos
 from obstaculos import crear_obstaculos_aleatorios
 import graphics
-
+import graphics_a_star
 # inicializamos pygame
 pygame.init()
 
@@ -92,7 +89,7 @@ distancia_A1 = Dijkstra(matriz, A1_posicion_inicial, A1_posicion_destino)
 camino_A1 = distancia_A1
 
 distancia_A2 = Dijkstra(matriz, A2_posicion_inicial, A2_posicion_destino)
-camino_A2 = distancia_A1
+camino_A2 = distancia_A2
 
 # Visualizamos el camino encontrado en la matriz
 matriz_caminos = [fila[:] for fila in matriz]
@@ -123,7 +120,7 @@ print("Camino A1: ", camino_A1_star)
 
 camino_A2_star = A_star(matriz_caminos_star, A2_posicion_inicial, A2_posicion_destino)
 print("===========================================")
-print("Dijkstra. Distancia A2: ", len(camino_A2_star), "unidades")
+print("A*. Distancia A2: ", len(camino_A2_star), "unidades")
 print("===========================================")
 print("Camino A2: ", camino_A2_star)
 print("===========================================")
@@ -134,44 +131,30 @@ print("===========================================")
 matriz_caminos_star = [fila[:] for fila in matriz]
 for x, y in camino_A1_star:
     matriz_caminos_star[x][y] = 'x'
-for x, y in camino_A2:
+for x, y in camino_A2_star:
     matriz_caminos_star[x][y] = 'y'
     
 print_module.print_path(matriz_caminos_star)
 
 # Almacenamos la distancia y el camino encontrado
-distancia_A1 = A_star(matriz, A1_posicion_inicial, A1_posicion_destino)
-camino_A1 = distancia_A1
+distancia_A1_star = A_star(matriz, A1_posicion_inicial, A1_posicion_destino)
+camino_A1_star = distancia_A1_star
 
-distancia_A2 = A_star(matriz, A2_posicion_inicial, A2_posicion_destino)
-camino_A2 = distancia_A1
+distancia_A2_star = A_star(matriz, A2_posicion_inicial, A2_posicion_destino)
+camino_A2_star = distancia_A2_star
 
 # Visualizamos el camino encontrado en la matriz
 matriz_caminos_star = [fila[:] for fila in matriz]
 
 for i, j in camino_A1_star:
     matriz_caminos_star[i][j] = "x"
+camino_A1_star = A_star(matriz, A1_posicion_inicial, A1_posicion_destino)
 
-camino_A1 = A_star(matriz, A1_posicion_inicial, A1_posicion_destino)
-for i, j in camino_A2:
+for i, j in camino_A2_star:
     matriz_caminos_star[i][j] = "y"
-camino_A2 = A_star(matriz, A2_posicion_inicial, A2_posicion_destino)
+camino_A2_star = A_star(matriz, A2_posicion_inicial, A2_posicion_destino)
 
 print_module.print_path(matriz_caminos_star)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 # Marcamos las posiciones iniciales y finales en la matriz
@@ -180,5 +163,13 @@ matriz_caminos[A2_posicion_inicial[0]][A2_posicion_inicial[1]] = 3
 matriz_caminos[A1_posicion_destino[0]][A1_posicion_destino[1]] = 5
 matriz_caminos[A2_posicion_destino[0]][A2_posicion_destino[1]] = 5
 
-graphics.dibujar_mapa(matriz_caminos)
-graphics.dibujar_mapa(matriz_star)
+# Marcamos las posiciones iniciales y finales en la matriz
+matriz_caminos_star[A1_posicion_inicial[0]][A1_posicion_inicial[1]] = 2
+matriz_caminos_star[A2_posicion_inicial[0]][A2_posicion_inicial[1]] = 3
+matriz_caminos_star[A1_posicion_destino[0]][A1_posicion_destino[1]] = 5
+matriz_caminos_star[A2_posicion_destino[0]][A2_posicion_destino[1]] = 5
+
+
+graphics.dibujar_mapa_dijkstra(matriz_caminos)
+
+graphics_a_star.dibujar_mapa_a_star(matriz_caminos_star)

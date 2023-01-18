@@ -6,7 +6,9 @@ ANCHO = 400
 ALTO = 400
 tamaño_celda = 25
 
-def dibujar_mapa_dijkstra(matriz):
+
+def dibujar_mapa_a_star(matriz):
+    
     # Configuramos las dimensiones de la ventana y su título
     ventana = pygame.display.set_mode((ANCHO, ALTO))
 
@@ -53,7 +55,3 @@ def dibujar_mapa_dijkstra(matriz):
             if keys[pygame.K_ESCAPE]:
                     pygame.quit()
                     sys.exit()
-
-
-
-
