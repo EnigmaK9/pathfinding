@@ -9,7 +9,7 @@ from dijkstra_module import Dijkstra
 from a_star_module import A_star
 from a_star_module import manhattan
 from a_star_module import path
-
+from vecinos import vecinos
 from obstaculos import crear_obstaculos_fijos
 from obstaculos import crear_obstaculos_aleatorios
 import graphics
@@ -58,18 +58,7 @@ matriz_caminos_star = [fila[:] for fila in matriz]
 # Función para obtener los vecinos de una posición en la matriz
 
 
-def vecinos(matriz, current):
-    x, y = current
-    vecinos = []
-    if x > 0:
-        vecinos.append((x - 1, y))
-    if y > 0:
-        vecinos.append((x, y - 1))
-    if x < len(matriz) - 1:
-        vecinos.append((x + 1, y))
-    if y < len(matriz[0]) - 1:
-        vecinos.append((x, y + 1))
-    return vecinos
+
 
 # Función para encontrar el camino mínimo usando Dijkstra iba aqui
 
@@ -126,13 +115,13 @@ print_module.print_path(matriz_caminos)
 # Función para encontrar el camino mínimo usando A*
 
 
-camino_A1_star = A_star(matriz_star, A1_posicion_inicial, A1_posicion_destino)
+camino_A1_star = A_star(matriz_caminos_star, A1_posicion_inicial, A1_posicion_destino)
 print("===========================================")
 print("A*. Distancia A1: ", len(camino_A1_star), "unidades")
 print("===========================================")
 print("Camino A1: ", camino_A1_star) 
 
-camino_A2_star = A_star(matriz_star, A2_posicion_inicial, A2_posicion_destino)
+camino_A2_star = A_star(matriz_caminos_star, A2_posicion_inicial, A2_posicion_destino)
 print("===========================================")
 print("Dijkstra. Distancia A2: ", len(camino_A2_star), "unidades")
 print("===========================================")
