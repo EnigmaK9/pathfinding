@@ -1,13 +1,15 @@
 import sys
-import random
 import heapq
 import pygame
 import tkinter as tk
 from tkinter import messagebox
 from tkinter import simpledialog
 import print_module
-from algorithms_module import Dijkstra, A_star
-from obstaculos_module import crear_obstaculos_fijos
+from dijkstra_module import Dijkstra
+from a_star_module import A_star
+from obstaculos import crear_obstaculos_fijos
+from obstaculos import crear_obstaculos_aleatorios
+import graphics
 
 # inicializamos pygame
 pygame.init()
@@ -16,13 +18,7 @@ ANCHO = 400
 ALTO = 400
 tamaño_celda = 25
 
-#
-# TODO
-# no se asegura que sean al menos 40 obstáculos
-# Agregar musica
-# Funcion para dibujar camino más corto en todos los casos
-# Poder colocar a los agentes dentro de la matriz.
-# Que no haya necesidad de interactuar con la terminal
+
 
 # Creamos una matriz de 20x20 con valor 0
 matriz = [[0 for _ in range(20)] for _ in range(20)]
@@ -33,13 +29,7 @@ obstacle_choice = messagebox.askyesno(
 
 # If user chooses "yes", use randomly generated obstacles
 if obstacle_choice:
-    # ingrese el numero de obstaculos deseados
-    numero_obstaculos = int(input("Ingrese el número de obstáculos deseados:"))
-    # Generamos obstáculos
-    for i in range(numero_obstaculos):
-        fila = random.randint(0, 19)
-        columna = random.randint(0, 19)
-        matriz[fila][columna] = 1
+    crear_obstaculos_aleatorios(matriz)
 # Si el usuario escoge no, usa obstaculos colocados de manera manual
 else:
     # agregamos algunos obstáculos, marcados con el valor 1
@@ -64,7 +54,7 @@ matriz[A2_posicion_destino[0]][A2_posicion_destino[1]] = 5
 print_module.print_path(matriz)
 
 #copia de la matriz original para usarla con A*
-matriz_astar = [fila[:] for fila in matriz]
+matriz_star = [fila[:] for fila in matriz]
 
 # Función para obtener los vecinos de una posición en la matriz
 
@@ -172,31 +162,11 @@ for fila in matriz_caminos:
 print("===========================================")
 
 
-def manhattan(pos1, pos2):
-    # calculamos la distancia manhattan entre dos puntos
-    return abs(pos1[0]-pos2[0]) + abs(pos1[1]-pos2[1])
 
 
 #A estrella va aqui
 
 
-
-def path(current, g_cost):
-    # creamos una lista para almacenar el camino encontrado
-    camino = [current]
-    # mientras el nodo actual no sea el inicio
-    while current != inicio:
-        # iteramos sobre los vecinos del nodo actual
-        for neighbor in vecinos(matriz, current):
-            # si el vecino tiene un costo g menor
-            if g_cost.get(neighbor, float('inf')) <= g_cost.get(current, float('inf')):
-                current = neighbor
-                # actualizamos el nodo actual
-                current = neighbor
-                # agregamos el vecino al camino
-                camino.append(current)
-    # retornamos el camino encontrado
-    return camino[::-1]
 
 
 # Preguntamos al usuario qué algoritmo desea utilizar
@@ -213,16 +183,16 @@ else:
 
 if camino:
     for pos in camino:
-        matriz_astar = matriz
-        matriz_astar[pos[0]][pos[1]] = "x"
+        matriz_star = matriz
+        matriz_star[pos[0]][pos[1]] = "x"
 
 print("===========================================")
 for x, y in camino_A1:
-    matriz_astar[x][y] = 'x'
+    matriz_star[x][y] = 'x'
 for x, y in camino_A2:
-    matriz_astar[x][y] = 'y'
+    matriz_star[x][y] = 'y'
 
-for fila in matriz_astar:
+for fila in matriz_star:
     for valor in fila:
         if valor == 0:
             print(".", end=" ")
@@ -240,35 +210,18 @@ for fila in matriz_astar:
 
 print("===========================================")
 
-camino_A1 = A_star(matriz, A1_posicion_inicial, A1_posicion_destino)
+camino_A1_star = A_star(matriz, A1_posicion_inicial, A1_posicion_destino)
 print("===========================================")
-print("A*.Distancia A1: ", len(camino_A1), "unidades")
+print("A*.Distancia A1: ", len(camino_A1_star), "unidades")
 print("===========================================")
-print("A*.Camino A1: ", camino_A1)
+print("A*.Camino A1: ", camino_A1_star)
 
-camino_A2 = A_star(matriz, A2_posicion_inicial, A2_posicion_destino)
+camino_A2_star = A_star(matriz, A2_posicion_inicial, A2_posicion_destino)
 print("===========================================")
-print("A*.Distancia A2: ", len(camino_A2), "unidades")
+print("A*.Distancia A2: ", len(camino_A2_star), "unidades")
 print("===========================================")
-print("A*.Camino A2: ", camino_A2)
+print("A*.Camino A2: ", camino_A2_star)
 print("===========================================")
-
-# Configuramos las dimensiones de la ventana y su título
-ventana = pygame.display.set_mode((ANCHO, ALTO))
-
-pygame.display.set_caption("Camino encontrado en el mapa")
-
-# Crear la ventana
-ventana = pygame.display.set_mode((500, 500))
-
-# Cargar las imagenes
-imagen_obstaculo = pygame.image.load("obstaculo.png")
-imagen_agente = pygame.image.load("agente.png")
-imagen_agente2 = pygame.image.load("agente2.png")
-imagen_meta = pygame.image.load("meta.png")
-imagen_camino = pygame.image.load("camino.png")
-imagen_camino2 = pygame.image.load("camino2.png")
-imagen_piso = pygame.image.load("piso.png")
 
 # Marcamos las posiciones iniciales y finales en la matriz
 matriz_caminos[A1_posicion_inicial[0]][A1_posicion_inicial[1]] = 2
@@ -276,28 +229,4 @@ matriz_caminos[A2_posicion_inicial[0]][A2_posicion_inicial[1]] = 3
 matriz_caminos[A1_posicion_destino[0]][A1_posicion_destino[1]] = 5
 matriz_caminos[A2_posicion_destino[0]][A2_posicion_destino[1]] = 5
 
-dibujo = {
-    1: imagen_obstaculo,
-    2: imagen_agente,
-    3: imagen_agente2,
-    5: imagen_meta,
-    'x': imagen_camino,
-    'y': imagen_camino2,
-    0: imagen_piso
-}
-
-
-# Dibuja cada celda de matriz_caminos en su posición correspondiente
-for i, fila in enumerate(matriz_caminos):
-    for j, valor in enumerate(fila):
-        x = j * 25
-        y = i * 25
-        ventana.blit(dibujo[valor], (x, y))
-
-pygame.display.update()
-
-while True:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
+graphics.dibujar_mapa()

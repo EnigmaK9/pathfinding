@@ -1,0 +1,7 @@
+
+# TODO
+# no se asegura que sean al menos 40 obstáculos
+# Agregar musica
+# Funcion para dibujar camino más corto en todos los casos
+# Poder colocar a los agentes dentro de la matriz.
+# Que no haya necesidad de interactuar con la terminal
