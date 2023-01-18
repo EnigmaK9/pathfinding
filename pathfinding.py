@@ -95,25 +95,8 @@ for x, y in camino_A1:
     matriz_caminos[x][y] = 'x'
 for x, y in camino_A2:
     matriz_caminos[x][y] = 'y'
-
-print("===========================================")
-# Visualizamos A1 y A2
-for fila in matriz_caminos:
-    for valor in fila:
-        if valor == 0:
-            print(".", end=" ")
-        elif valor == 1:
-            print("#", end=" ")
-        elif valor == "x":
-            print("x", end=" ")
-        elif valor == "y":
-            print("y", end=" ")
-        elif valor == 2:
-            print("A1", end=" ")
-        elif valor == 3:
-            print("A2", end=" ")
-    print()
-print("===========================================")
+    
+print_module.print_path(matriz_caminos)
 
 # Almacenamos la distancia y el camino encontrado
 distancia_A1 = Dijkstra(matriz, A1_posicion_inicial, A1_posicion_destino)
@@ -133,33 +116,6 @@ for i, j in camino_A2:
     matriz_caminos[i][j] = "y"
 camino_A2 = Dijkstra(matriz, A2_posicion_inicial, A2_posicion_destino)
 
-# Visualizamos los caminos encontrados en el mapa
-# Crear una copia de la matriz original para no alterarla
-matriz_caminos = [fila[:] for fila in matriz]
-
-print("===========================================")
-for x, y in camino_A1:
-    matriz_caminos[x][y] = 'x'
-for x, y in camino_A2:
-    matriz_caminos[x][y] = 'y'
-
-for fila in matriz_caminos:
-    for valor in fila:
-        if valor == 0:
-            print(".", end=" ")
-        elif valor == 1:
-            print("#", end=" ")
-        elif valor == 2:
-            print("A1", end=" ")
-        elif valor == 3:
-            print("A2", end=" ")
-        elif valor == "x":
-            print("x", end=" ")
-        elif valor == "y":
-            print("y", end=" ")
-    print()
-
-print("===========================================")
 
 
 
