@@ -2,6 +2,7 @@ import sys
 import random
 import heapq
 import pygame
+import tkinter as tk
 
 #inicializamos pygame
 pygame.init()
@@ -16,18 +17,33 @@ pygame.display.set_caption("Camino encontrado en el mapa")
 
 # Creamos una matriz de 20x20 con valor 0
 matriz = [[0 for _ in range(20)] for _ in range(20)]
-
+# Funcion que muestra un cuadro de dialogo para que el usuario 
+# ingrese el numero de obstaculos deseados
+numero_obstaculos = int(input("Ingrese el número de obstáculos deseados:"))
 # Generamos obstáculos
-for i in range(120):
+for i in range(numero_obstaculos):
     fila = random.randint(0, 19)
     columna = random.randint(0, 19)
     matriz[fila][columna] = 1
+# dos funciones, una para obtener la posición inicial
+# y otra para obtener la posición destino.
+def obtener_posicion_inicial():
+    root = tk.Tk()
+    root.withdraw()
+    posicion_inicial = tk.simpledialog.askinteger("Ingresar posicion inicial", "Ingrese la posición inicial del agente en formato (fila,columna):", minvalue=0, maxvalue=19)
+    return posicion_inicial
+
+def obtener_posicion_destino():
+    root = tk.Tk()
+    root.withdraw()
+    posicion_destino = tk.simpledialog.askinteger("Ingresar posicion destino", "Ingrese la posición destino del agente en formato (fila,columna):", minvalue=0, maxvalue=19)
+    return posicion_destino    
 # Asignamos las posiciones iniciales y finales de A1 y A2
 
-A1_posicion_inicial = (1, 0)
-A1_posicion_destino = (1, 17)
-A2_posicion_inicial = (19, 19)
-A2_posicion_destino = (1, 17)
+A1_posicion_inicial = tuple(map(int,input("Ingrese la posición inicial del agente A1 en formato (fila,columna):").split(',')))
+A1_posicion_destino = tuple(map(int,input("Ingrese la posición destino del agente A1 en formato (fila,columna):").split(',')))
+A2_posicion_inicial = tuple(map(int,input("Ingrese la posición inicial del agente A2 en formato (fila,columna):").split(',')))
+A2_posicion_destino = tuple(map(int,input("Ingrese la posición destino del agente A2 en formato (fila,columna):").split(',')))
 
 #Marcamos las posiciones iniciales y finales en la matriz
 matriz[A1_posicion_inicial[0]][A1_posicion_inicial[1]] = 2
@@ -198,6 +214,106 @@ for fila in matriz_caminos:
     print()
     
 print("===========================================")
+
+
+def manhattan(pos1, pos2):
+    #calculamos la distancia manhattan entre dos puntos
+    return abs(pos1[0]-pos2[0]) + abs(pos1[1]-pos2[1])
+
+# A*
+def A_star(matriz, inicio, destino):
+# creamos una cola de prioridad para almacenar los nodos a explorar
+    cola = []
+    #agregamos el nodo inicial a la lista abierta con un costo g=0
+    heapq.heappush(abierta, (0, 0, inicio))
+    #creamos un diccionario para almacenar el costo g de cada nodo
+    g_cost = {inicio: 0}
+    #creamos un diccionario para almacenar el costo f de cada nodo
+    f_cost = {inicio: manhattan(inicio, destino)}
+    #mientras la lista abierta no esté vacía
+    while abierta:
+        #extraemos el nodo con menor f costo
+        f, g, current = heapq.heappop(abierta)
+        #agregamos el nodo a la lista cerrada
+        cerrada.append(current)
+        #si encontramos el destino
+        if current == destino:
+            #retornamos el camino
+            return path(current, g_cost)
+        #iteramos sobre los vecinos del nodo actual
+        for neighbor in vecinos(matriz, current):
+            #si el vecino esta en la lista cerrada o es un obstaculo
+            if neighbor in cerrada or matriz[neighbor[0]][neighbor[1]] == 1:
+                continue
+            #calculamos el costo g del vecino
+            temp_g = g + 1
+            #si el vecino no esta en la lista abierta o el costo g es menor que el costo g anterior
+            if neighbor not in [i[2] for i in abierta] or temp_g < g_cost[neighbor]:
+                #actualizamos el costo g
+                g_cost[neighbor] = temp_g
+                #calculamos el costo f del vecino
+                f = temp_g + manhattan(neighbor, destino)
+                #agregamos el vecino a la lista abierta con su costo f
+                heapq.heappush(abierta, (f, temp_g, neighbor))
+    #si no se encuentra un camino retornamos None
+    return None
+
+def path(current, g_cost):
+    # creamos una lista para almacenar el camino encontrado
+    camino = [current]
+    # mientras el nodo actual no sea el inicio
+    while current != inicio:
+        # iteramos sobre los vecinos del nodo actual
+        for neighbor in vecinos(matriz, current):
+            # si el vecino tiene un costo g menor
+            if g_cost[neighbor] < g_cost[current]:
+                # actualizamos el nodo actual
+                current = neighbor
+                # agregamos el vecino al camino
+                camino.append(current)
+    # retornamos el camino encontrado
+    return camino[::-1]
+
+
+# Preguntamos al usuario qué algoritmo desea utilizar
+opcion = int(input("Ingrese 1 para A* o 2 para Dijkstra:"))
+
+# Verificamos la opción seleccionada
+if opcion == 1:
+    # Llamamos a la función A*
+    camino = A_estrella(matriz, A1_posicion_inicial, A1_posicion_destino)
+else:
+    # Llamamos a la función Dijkstra
+    camino = Dijkstra(matriz, A1_posicion_inicial, A1_posicion_destino)
+
+if camino:
+    for pos in camino:
+        matriz[pos[0]][pos[1]] = "x"
+print("===========================================")
+for fila in matriz:
+    for valor in fila:
+        if valor == 0:
+            print(".", end=" ")
+        elif valor == 1:
+            print("#", end=" ")
+        elif valor == 2:
+            print("A1", end=" ")
+        elif valor == 3:
+            print("A2", end=" ")
+        elif valor == 5:
+            print("G", end=" ")
+        elif valor == "x":
+            print("x", end=" ")
+        elif valor == "y":
+            print("y", end=" ")
+            print()
+        else:
+            print("No se encontró un camino")  
+
+
+
+
+
 # Crear la ventana
 ventana = pygame.display.set_mode((500, 500))
 
