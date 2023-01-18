@@ -5,6 +5,7 @@ import pygame
 import tkinter as tk
 from tkinter import messagebox
 from tkinter import simpledialog
+
 # inicializamos pygame
 pygame.init()
 # parametros de la ventana
@@ -12,8 +13,13 @@ ANCHO = 400
 ALTO = 400
 tamaño_celda = 25
 
+#
 # TODO
-# no se asegura que sean al menos 40 obstaculos
+# no se asegura que sean al menos 40 obstáculos
+# Agregar musica
+# Funcion para dibujar camino más corto en todos los casos
+# Poder colocar a los agentes dentro de la matriz.
+# Que no haya necesidad de interactuar con la terminal
 
 # Creamos una matriz de 20x20 con valor 0
 matriz = [[0 for _ in range(20)] for _ in range(20)]
@@ -65,29 +71,6 @@ else:
     matriz[7][13] = 1
     matriz[8][13] = 1
 
-"""
-# dos funciones, una para obtener la posición inicial
-# y otra para obtener la posición destino.
-def obtener_posicion_inicial():
-    root = tk.Tk()
-    posicion_inicial = tk.simpledialog.askinteger(
-        "Ingresar posicion inicial", "Ingrese la posición inicial del agente en formato (fila,columna):", minvalue=0, maxvalue=19)
-    return posicion_inicial
-
-
-def obtener_posicion_destino():
-    root = tk.Tk()
-    #root.withdraw()
-    posicion_destino = tk.simpledialog.askinteger(
-        "Ingresar posicion destino", "Ingrese la posición destino del agente en formato (fila,columna):", minvalue=0, maxvalue=19)
-    return posicion_destino
-# Asignamos las posiciones iniciales y finales de A1 y A2
-
-A1_posicion_inicial = obtener_posicion_inicial()
-A2_posicion_inicial = obtener_posicion_inicial()
-A1_posicion_destino = obtener_posicion_destino()
-A2_posicion_destino = obtener_posicion_inicial()
-"""
 
 A1_posicion_inicial = tuple(map(int, input(
     "Ingrese la posición inicial del agente A1 en formato (fila,columna):").split(',')))
@@ -127,6 +110,8 @@ for fila in matriz:
     print()
 
 print("===========================================")
+#copia de la matriz original para usarla con A*
+matriz_astar = [fila[:] for fila in matriz]
 
 # Función para obtener los vecinos de una posición en la matriz
 
@@ -197,7 +182,6 @@ print("Distancia A2: ", len(camino_A2), "unidades")
 print("===========================================")
 print("Camino A2: ", camino_A2)
 print("===========================================")
-
 # Visualizamos el camino encontrado en la matriz
 # Crear una copia de la matriz original para no alterarla
 
@@ -344,6 +328,7 @@ def path(current, g_cost):
 # Preguntamos al usuario qué algoritmo desea utilizar
 opcion = int(input("Ingrese 1 para A* o 2 para Dijkstra:"))
 
+
 # Verificamos la opción seleccionada
 if opcion == 1:
     # Llamamos a la función A*
@@ -354,9 +339,16 @@ else:
 
 if camino:
     for pos in camino:
-        matriz[pos[0]][pos[1]] = "x"
+        matriz_astar = matriz
+        matriz_astar[pos[0]][pos[1]] = "x"
+
 print("===========================================")
-for fila in matriz:
+for x, y in camino_A1:
+    matriz_astar[x][y] = 'x'
+for x, y in camino_A2:
+    matriz_astar[x][y] = 'y'
+
+for fila in matriz_astar:
     for valor in fila:
         if valor == 0:
             print(".", end=" ")
@@ -366,15 +358,27 @@ for fila in matriz:
             print("A1", end=" ")
         elif valor == 3:
             print("A2", end=" ")
-        elif valor == 5:
-            print("G", end=" ")
         elif valor == "x":
             print("x", end=" ")
         elif valor == "y":
             print("y", end=" ")
-            print()
-        else:
-            print("No se encontró un camino")
+    print()
+
+print("===========================================")
+
+camino_A1 = A_star(matriz, A1_posicion_inicial, A1_posicion_destino)
+print("===========================================")
+print("A*.Distancia A1: ", len(camino_A1), "unidades")
+print("===========================================")
+print("A*.Camino A1: ", camino_A1)
+
+camino_A2 = A_star(matriz, A2_posicion_inicial, A2_posicion_destino)
+print("===========================================")
+print("A*.Distancia A2: ", len(camino_A2), "unidades")
+print("===========================================")
+print("A*.Camino A2: ", camino_A2)
+print("===========================================")
+
 # Configuramos las dimensiones de la ventana y su título
 ventana = pygame.display.set_mode((ANCHO, ALTO))
 
