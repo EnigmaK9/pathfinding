@@ -1,7 +1,7 @@
 import pygame
 
 
-def dibujar_mapa():
+def dibujar_mapa(matriz):
     # Configuramos las dimensiones de la ventana y su título
     ventana = pygame.display.set_mode((ANCHO, ALTO))
 
@@ -31,7 +31,7 @@ def dibujar_mapa():
 
 
     # Dibuja cada celda de matriz_caminos en su posición correspondiente
-    for i, fila in enumerate(matriz_caminos):
+    for i, fila in enumerate(matriz):
         for j, valor in enumerate(fila):
             x = j * 25
             y = i * 25
