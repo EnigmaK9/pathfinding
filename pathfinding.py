@@ -5,6 +5,9 @@ import pygame
 import tkinter as tk
 from tkinter import messagebox
 from tkinter import simpledialog
+import print_module
+from dijkstra_module import Dijkstra
+from obstaculos_module import crear_obstaculos_fijos
 
 # inicializamos pygame
 pygame.init()
@@ -40,36 +43,7 @@ if obstacle_choice:
 # Si el usuario escoge no, usa obstaculos colocados de manera manual
 else:
     # agregamos algunos obstáculos, marcados con el valor 1
-    matriz[4][2] = 1
-    matriz[4][3] = 1
-    matriz[3][4] = 1
-    matriz[4][6] = 1
-    matriz[5][7] = 1
-    matriz[6][7] = 1
-    matriz[7][7] = 1
-    matriz[5][8] = 1
-    matriz[6][8] = 1
-    matriz[7][8] = 1
-    matriz[8][8] = 1
-    matriz[9][8] = 1
-    matriz[10][8] = 1
-    matriz[5][9] = 1
-    matriz[9][9] = 1
-    matriz[10][9] = 1
-    matriz[11][9] = 1
-    matriz[12][9] = 1
-    matriz[13][9] = 1
-    matriz[4][10] = 1
-    matriz[1][11] = 1
-    matriz[2][11] = 1
-    matriz[3][11] = 1
-    matriz[4][11] = 1
-    matriz[5][11] = 1
-    matriz[0][11] = 1
-    matriz[7][12] = 1
-    matriz[8][12] = 1
-    matriz[7][13] = 1
-    matriz[8][13] = 1
+    crear_obstaculos_fijos(matriz)
 
 
 A1_posicion_inicial = tuple(map(int, input(
@@ -87,29 +61,8 @@ matriz[A2_posicion_inicial[0]][A2_posicion_inicial[1]] = 3
 matriz[A1_posicion_destino[0]][A1_posicion_destino[1]] = 5
 matriz[A2_posicion_destino[0]][A2_posicion_destino[1]] = 5
 
+print_module.print_path(matriz)
 
-print("===========================================")
-
-# Visualizamos A1 y A2
-for fila in matriz:
-    for valor in fila:
-        if valor == 0:
-            print(".", end=" ")
-        elif valor == 1:
-            print("#", end=" ")
-        elif valor == 2:
-            print("A1", end=" ")
-        elif valor == 3:
-            print("A2", end=" ")
-        elif valor == 5:
-            print("G", end=" ")
-        elif valor == "x":
-            print("x", end=" ")
-        elif valor == "y":
-            print("y", end=" ")
-    print()
-
-print("===========================================")
 #copia de la matriz original para usarla con A*
 matriz_astar = [fila[:] for fila in matriz]
 
@@ -130,44 +83,6 @@ def vecinos(matriz, current):
     return vecinos
 
 # Función para encontrar el camino mínimo usando Dijkstra
-
-
-def Dijkstra(matriz, inicio, destino):
-    # Creamos una cola de prioridad para almacenar los nodos a explorar
-    cola = []
-    # agregamos el nodo inicial con distancia 0
-    heapq.heappush(cola, (0, inicio))
-    # creamos un diccionario para almacenar los nodos visitados
-    visitados = {}
-    # Inicializamos la distancia del nodo inicial en 0
-    visitados[inicio] = 0
-    # creamos un diccionario para almacenar el camino desde el nodo inicial hasta cada uno de los nodos visitados
-    camino = {}
-    camino[inicio] = [inicio]
-    # mientras la cola no esté vacía
-    while cola:
-        # obtenemos el nodo con menor distancia
-        current = heapq.heappop(cola)[1]
-        # para cada vecino del nodo actual
-        for vecino in vecinos(matriz, current):
-            # si el vecino no ha sido visitado
-            if vecino not in visitados:
-                # si el vecino es un obstáculo, ignoramos
-                if matriz[vecino[0]][vecino[1]] == 1:
-                    continue
-                # calculamos la distancia del vecino
-                distancia = visitados[current] + 1
-                # actualizamos la distancia del vecino si es menor
-                if vecino not in visitados or distancia < visitados[vecino]:
-                    visitados[vecino] = distancia
-                    camino[vecino] = camino[current] + [vecino]
-                    # agregamos el vecino a la cola de prioridad
-                    heapq.heappush(cola, (distancia, vecino))
-        # si el nodo actual es el destino, devolvemos el camino
-        if current == destino:
-            return camino[current]
-    # si no se encontró un camino, devolvemos None
-    return None
 
 
 camino_A1 = Dijkstra(matriz, A1_posicion_inicial, A1_posicion_destino)
