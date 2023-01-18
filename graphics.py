@@ -1,5 +1,9 @@
 import pygame
 
+# parametros de la ventana
+ANCHO = 400
+ALTO = 400
+tamaño_celda = 25
 
 def dibujar_mapa(matriz):
     # Configuramos las dimensiones de la ventana y su título
