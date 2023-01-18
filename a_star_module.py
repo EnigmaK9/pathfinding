@@ -1,4 +1,5 @@
-from pathfinding import vecinos
+
+from vecinos import vecinos
 
 matriz = None
 inicio = None
@@ -61,8 +62,6 @@ def path(current, g_cost):
                 camino.append(current)
     # retornamos el camino encontrado
     return camino[::-1]
-# Si no se encuentra camino, devolvemos none
-return None
 
 
 
