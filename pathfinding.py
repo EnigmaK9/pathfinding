@@ -12,6 +12,8 @@ ANCHO = 400
 ALTO = 400
 tamaño_celda = 25
 
+# TODO
+# no se asegura que sean al menos 40 obstaculos
 
 # Creamos una matriz de 20x20 con valor 0
 matriz = [[0 for _ in range(20)] for _ in range(20)]
