@@ -1,5 +1,5 @@
 import heapq
-from vecinos import vecinos
+from python.vecinos import vecinos
 
 matriz = None
 inicio = None

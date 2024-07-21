@@ -162,15 +162,15 @@ def draw_all_matrices():
     window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
     pygame.display.set_caption("Pathfinding Comparison - Fixed and Random Obstacles with Dijkstra and A*")
     
-    obstacle_image = pygame.image.load("obstaculo.png")
-    agent_image = pygame.image.load("agente.png")
-    agent2_image = pygame.image.load("agente2.png")
-    goal1_image = pygame.image.load("meta.png")
-    goal2_image = pygame.image.load("meta.png")
-    path_image = pygame.image.load("camino.png")
-    path2_image = pygame.image.load("camino2.png")
-    floor_image = pygame.image.load("piso.png")
-    path_both_image = pygame.image.load("camino_both.png")
+    obstacle_image = pygame.image.load("img/obstaculo.png")
+    agent_image = pygame.image.load("img/agente.png")
+    agent2_image = pygame.image.load("img/agente2.png")
+    goal1_image = pygame.image.load("img/meta.png")
+    goal2_image = pygame.image.load("img/meta.png")
+    path_image = pygame.image.load("img/camino.png")
+    path2_image = pygame.image.load("img/camino2.png")
+    floor_image = pygame.image.load("img/piso.png")
+    path_both_image = pygame.image.load("img/camino_both.png")
 
     drawing = {
         1: obstacle_image,
@@ -257,18 +257,22 @@ def get_input_data():
     tk.Label(window, text="A1 Start Position (row,col):").grid(row=0, column=0)
     A1_start_entry = tk.Entry(window)
     A1_start_entry.grid(row=0, column=1)
+    A1_start_entry.insert(0, "10,10")
 
     tk.Label(window, text="A1 Goal Position (row,col):").grid(row=1, column=0)
     A1_goal_entry = tk.Entry(window)
     A1_goal_entry.grid(row=1, column=1)
+    A1_goal_entry.insert(0, "0,0")
 
     tk.Label(window, text="A2 Start Position (row,col):").grid(row=2, column=0)
     A2_start_entry = tk.Entry(window)
     A2_start_entry.grid(row=2, column=1)
+    A2_start_entry.insert(0, "12,12")
 
     tk.Label(window, text="A2 Goal Position (row,col):").grid(row=3, column=0)
     A2_goal_entry = tk.Entry(window)
     A2_goal_entry.grid(row=3, column=1)
+    A2_goal_entry.insert(0, "14,19")
 
     obstacles_var = tk.IntVar(value=1)
     tk.Radiobutton(window, text="Fixed Obstacles", variable=obstacles_var, value=1).grid(row=4, column=0)
@@ -277,6 +281,7 @@ def get_input_data():
     tk.Label(window, text="Number of Random Obstacles:").grid(row=5, column=0)
     num_obstacles_entry = tk.Entry(window)
     num_obstacles_entry.grid(row=5, column=1)
+    num_obstacles_entry.insert(0, "50")
 
     tk.Button(window, text="Submit", command=on_submit).grid(row=6, column=0, columnspan=2)
 

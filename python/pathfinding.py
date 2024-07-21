@@ -4,13 +4,13 @@ import pygame
 import tkinter as tk
 from tkinter import messagebox
 from tkinter import simpledialog
-import print_module
-from dijkstra_module import Dijkstra
-from a_star_module import A_star
-from obstaculos import crear_obstaculos_fijos
-from obstaculos import crear_obstaculos_aleatorios
-import graphics
-import graphics_a_star
+import python.print_module as print_module
+from python.dijkstra_module import Dijkstra
+from python.a_star_module import A_star
+from python.obstaculos import crear_obstaculos_fijos
+from python.obstaculos import crear_obstaculos_aleatorios
+import python.graphics as graphics
+import python.graphics_a_star as graphics_a_star
 # inicializamos pygame
 pygame.init()
 
