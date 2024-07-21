@@ -61,10 +61,7 @@ The project visualizes the matrices and paths using Pygame, displaying:
 ### 📹 Video Demonstration
 
 <p align="center">
-  <video width="600" controls>
-    <source src="media/pathfinding.mp4" type="video/mp4">
-    Your browser does not support the video tag.
-  </video>
+  <img src="media/pathfinding.gif" alt="Pathfinding Demonstration">
 </p>
 
 ## 🧮 Algorithms
