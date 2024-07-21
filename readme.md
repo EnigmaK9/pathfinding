@@ -1,3 +1,5 @@
+### File: `README.md`
+
 # 🛤️ Pathfinding Algorithms Comparison
 
 This project demonstrates the comparison between Dijkstra and A\* algorithms for pathfinding in a 20x20 grid environment. The comparison is made for both fixed and random obstacles.
@@ -52,8 +54,17 @@ The project visualizes the matrices and paths using Pygame, displaying:
 ### 📸 Screenshots
 
 <p align="center">
-  <img src="screenshot.png" alt="Screenshot 1">
-  <img src="screenshot2.png" alt="Screenshot 2">
+  <img src="media/screenshot.png" alt="Screenshot 1">
+  <img src="media/screenshot2.png" alt="Screenshot 2">
+</p>
+
+### 📹 Video Demonstration
+
+<p align="center">
+  <video width="600" controls>
+    <source src="media/pathfinding.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
 </p>
 
 ## 🧮 Algorithms

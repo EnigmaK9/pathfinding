@@ -62,6 +62,12 @@ def draw_matrices(matrix, A1_start_pos, A2_start_pos, A1_goal_pos, A2_goal_pos, 
                 x = j * CELL_SIZE + x_offset
                 y = i * CELL_SIZE + y_offset
                 window.blit(drawing[value], (x, y))
+        
+        # Draw agents and goals on top of the matrix
+        window.blit(agent_image, (A1_start_pos[1] * CELL_SIZE + x_offset, A1_start_pos[0] * CELL_SIZE + y_offset))
+        window.blit(agent2_image, (A2_start_pos[1] * CELL_SIZE + x_offset, A2_start_pos[0] * CELL_SIZE + y_offset))
+        window.blit(goal1_image, (A1_goal_pos[1] * CELL_SIZE + x_offset, A1_goal_pos[0] * CELL_SIZE + y_offset))
+        window.blit(goal2_image, (A2_goal_pos[1] * CELL_SIZE + x_offset, A2_goal_pos[0] * CELL_SIZE + y_offset))
         pygame.display.update()
 
     # Initial draw of all matrices without paths
@@ -74,12 +80,6 @@ def draw_matrices(matrix, A1_start_pos, A2_start_pos, A1_goal_pos, A2_goal_pos, 
         title_surface = font.render(title, True, (0, 0, 0))  # Black color for text
         title_rect = title_surface.get_rect(center=(x_offset + WIDTH // 2, y_offset + 5))
         window.blit(title_surface, title_rect)
-
-        # Draw agents and goals on top of the matrix
-        window.blit(agent_image, (A1_start_pos[1] * CELL_SIZE + x_offset, A1_start_pos[0] * CELL_SIZE + y_offset))
-        window.blit(agent2_image, (A2_start_pos[1] * CELL_SIZE + x_offset, A2_start_pos[0] * CELL_SIZE + y_offset))
-        window.blit(goal1_image, (A1_goal_pos[1] * CELL_SIZE + x_offset, A1_goal_pos[0] * CELL_SIZE + y_offset))
-        window.blit(goal2_image, (A2_goal_pos[1] * CELL_SIZE + x_offset, A2_goal_pos[0] * CELL_SIZE + y_offset))
 
     # Function to animate the path
     def animate_path(matrix, path, x_offset, y_offset, path_type):
@@ -95,6 +95,11 @@ def draw_matrices(matrix, A1_start_pos, A2_start_pos, A1_goal_pos, A2_goal_pos, 
     # Animate paths for A*
     animate_path(matrix_a_star, path_A1_a_star, 5, HEIGHT + 15, 'x')
     animate_path(matrix_a_star, path_A2_a_star, 5, HEIGHT + 15, 'y')
+
+    # Ensure agents and goals are drawn again after animation
+    draw_matrix(matrix, 5, 5)
+    draw_matrix(matrix_dijkstra, WIDTH + 15, 5)
+    draw_matrix(matrix_a_star, 5, HEIGHT + 15)
 
     # Display the number of tiles traversed in the bottom right black space
     font = pygame.font.SysFont(None, 24)
