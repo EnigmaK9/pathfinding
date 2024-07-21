@@ -1,24 +1,43 @@
 # Pathfinding
-<a href=https://youtu.be/p9O71hcsSQc>Video del proyecto</a>
 
+<a href="https://youtu.be/p9O71hcsSQc">Video del proyecto</a>
 
-Realizar un programa que resuelva el problema de pathfinding para un mapa de 20x20 celdas con
-al menos 40 celdas obstáculo. El programa deberá recibir como entrada la posición inicial de dos
-agentes A1 y A2, y encontrar el camino mínimo para llegar cada uno a su destino. El algoritmo de
-pathfinding a elegir se deja a criterio del alumno, así como el lenguaje de programación a emplear
-y el modo de visualización (gráfico o en consola).
+This program solves the pathfinding problem for a 20x20 grid with at least 40 obstacle cells. The program receives as input the initial position of two agents, A1 and A2, and finds the shortest path for each to reach their destination. The choice of the pathfinding algorithm is left to the student, as well as the programming language to be used and the mode of visualization (graphical or console).
 
-## Paso 1.
-Inicializar la matriz de 20x20 celdas, con un valor de 0 en cada celda.
-## Paso 2.
-Generar al menos 40 celdas obstáculo de manera aleatoria o fija en el mapa y marcarlas con el valor 1.
-## Paso 3.
-Recibir como entrada la posición inicial de dos agentes A1 y A2, y también las posiciones finales para cada uno.
-## Paso 4.
-Inicializar las posiciones iniciales de A1 y A2 en el mapa con valores distintos (por ejemplo, 2 para A1 y 3 para A2).
-## Paso 5.
-Elegir un algoritmo de pathfinding (como A*, Dijkstra, BFS, etc.) y aplicarlo para encontrar el camino mínimo para cada agente desde su posición inicial hasta su destino.
-## Paso 6.
-Almacenar los caminos encontrados para A1 y A2.
-## Paso 7.
-Visualizar los caminos encontrados en el mapa, ya sea en una interfaz gráfica o en consola.
+## Step 1
+
+Initialize the 20x20 cell grid, with a value of 0 in each cell.
+
+## Step 2
+
+Generate at least 40 obstacle cells randomly or fixed in the map and mark them with the value 1.
+
+## Step 3
+
+Receive as input the initial position of two agents, A1 and A2, and also the final positions for each.
+
+## Step 4
+
+Initialize the initial positions of A1 and A2 in the map with distinct values (for example, 2 for A1 and 3 for A2).
+
+## Step 5
+
+Choose a pathfinding algorithm (like A\*, Dijkstra, BFS, etc.) and apply it to find the shortest path for each agent from their initial position to their destination.
+
+## Step 6
+
+Store the paths found for A1 and A2.
+
+## Step 7
+
+Visualize the paths found on the map, either in a graphical interface or in the console.
+
+## Screenshots
+
+### Pathfinding Results
+
+![Pathfinding Results](screenshot.png)
+
+### GUI to Insert Data
+
+![GUI to Insert Data](screenshot2.png)
