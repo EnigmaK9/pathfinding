@@ -6,6 +6,8 @@ HEIGHT = 400
 CELL_SIZE = 20
 
 def draw_all_matrices(matrix_fixed, matrix_random, matrix_fixed_dijkstra, matrix_fixed_a_star, matrix_random_dijkstra, matrix_random_a_star, A1_start_pos, A2_start_pos, A1_goal_pos, A2_goal_pos):
+    pygame.init()  # Asegurarse de que pygame esté inicializado
+
     WINDOW_WIDTH = WIDTH * 3 + 40
     WINDOW_HEIGHT = HEIGHT * 2 + 30
     window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))

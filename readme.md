@@ -1,8 +1,4 @@
-Here's a revised README file for your project, incorporating icons for better visual appeal:
-
----
-
-# 🛤️ Pathfinding Algorithms Comparison
+# 🛤️ Pathfinding Algorithms Comparison (Author: EnigmaK9)
 
 This project demonstrates the comparison between Dijkstra and A\* algorithms for pathfinding in a 20x20 grid environment. The comparison is made for both fixed and random obstacles.
 
@@ -25,7 +21,7 @@ pip install pygame
 2. **Run the Script**: Execute the script to start the Tkinter input configuration window where you can specify the start and goal positions for two agents (A1 and A2), and choose between fixed or random obstacles.
 
 ```bash
-python pathfinding_comparison.py
+python main.py
 ```
 
 ## ⚙️ Functionality
@@ -74,7 +70,26 @@ $$
 h(x) = |x_1 - x_2| + |y_1 - y_2|
 $$
 
-## 🛠️ Functions and Classes
+## 🛠️ Code Modularization
+
+The code is modularized into several files to improve maintainability and readability. Here is a brief explanation of the modularization:
+
+- **main.py**: The main script that initializes the program, configures the matrices, executes the pathfinding algorithms, and displays the results.
+  - **Pattern Used**: Facade Pattern - Simplifies the interaction with the system by providing a unified interface to various functionalities.
+- **obstacles.py**: Contains functions to create fixed and random obstacles in the matrices.
+  - **Pattern Used**: Factory Pattern - Handles the creation of different configurations of obstacles.
+- **pathfinding.py**: Implements the Dijkstra and A\* algorithms.
+  - **Pattern Used**: Strategy Pattern - Allows using different pathfinding algorithms interchangeably.
+- **utils.py**: Contains utility functions such as calculating neighbors, Manhattan distance, and reconstructing the path.
+  - **Pattern Used**: Utility Pattern - Provides reusable helper functions.
+- **visualization.py**: Manages the visualization of the matrices and paths using Pygame.
+  - **Pattern Used**: Template Method Pattern - Defines the skeleton of the drawing algorithm.
+- **input_data.py**: Handles user input via Tkinter for setting up start and goal positions and choosing obstacle types.
+  - **Pattern Used**: Builder Pattern - Constructs the initial configuration based on user input.
+- **results.py**: Displays the results of the pathfinding algorithms in a Tkinter window.
+  - **Pattern Used**: Singleton Pattern - Ensures only one instance of the results window is displayed.
+
+## 🧮 Functions and Classes
 
 - **🔄 `create_random_obstacles(matrix, num_obstacles)`**: Adds random obstacles to the matrix.
 - **🪵 `create_fixed_obstacles(matrix)`**: Adds fixed obstacles to the matrix.

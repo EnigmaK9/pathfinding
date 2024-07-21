@@ -10,10 +10,10 @@ def get_input_data(matrix_fixed, matrix_random, A1_start_pos, A1_goal_pos, A2_st
             create_random_obstacles(matrix_fixed, int(num_obstacles_entry.get()))
             create_random_obstacles(matrix_random, int(num_obstacles_entry.get()))
 
-        A1_start_pos = tuple(map(int, A1_start_entry.get().split(',')))
-        A1_goal_pos = tuple(map(int, A1_goal_entry.get().split(',')))
-        A2_start_pos = tuple(map(int, A2_start_entry.get().split(',')))
-        A2_goal_pos = tuple(map(int, A2_goal_entry.get().split(',')))
+        A1_start_pos[:] = list(map(int, A1_start_entry.get().split(',')))
+        A1_goal_pos[:] = list(map(int, A1_goal_entry.get().split(',')))
+        A2_start_pos[:] = list(map(int, A2_start_entry.get().split(',')))
+        A2_goal_pos[:] = list(map(int, A2_goal_entry.get().split(',')))
 
         matrix_fixed[A1_start_pos[0]][A1_start_pos[1]] = 2
         matrix_fixed[A2_start_pos[0]][A2_start_pos[1]] = 3
