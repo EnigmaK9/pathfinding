@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import font as tkFont
 from obstacles import create_fixed_obstacles, create_random_obstacles
 
 def get_input_data(matrix_fixed, matrix_random, A1_start_pos, A1_goal_pos, A2_start_pos, A2_goal_pos):
@@ -48,40 +49,47 @@ def get_input_data(matrix_fixed, matrix_random, A1_start_pos, A1_goal_pos, A2_st
     window = tk.Tk()
     window.title("Input Configuration")
 
+    # Increase window size and center it on the screen
+    window.geometry("800x400")
+    window.eval('tk::PlaceWindow . center')
+
+    # Set Roboto font size
+    large_font = tkFont.Font(family="Roboto", size=18)
+
     # Create and place labels and entry fields for the start and goal positions of agents A1 and A2
-    tk.Label(window, text="A1 Start Position (row,col):").grid(row=0, column=0)
-    A1_start_entry = tk.Entry(window)
-    A1_start_entry.grid(row=0, column=1)
+    tk.Label(window, text="Agent 1 Start Position (row, col):", font=large_font).grid(row=0, column=0, sticky="e", padx=10, pady=5)
+    A1_start_entry = tk.Entry(window, font=large_font)
+    A1_start_entry.grid(row=0, column=1, padx=10, pady=5)
     A1_start_entry.insert(0, "10,10")
 
-    tk.Label(window, text="A1 Goal Position (row,col):").grid(row=1, column=0)
-    A1_goal_entry = tk.Entry(window)
-    A1_goal_entry.grid(row=1, column=1)
+    tk.Label(window, text="Agent 1 Goal Position (row, col):", font=large_font).grid(row=1, column=0, sticky="e", padx=10, pady=5)
+    A1_goal_entry = tk.Entry(window, font=large_font)
+    A1_goal_entry.grid(row=1, column=1, padx=10, pady=5)
     A1_goal_entry.insert(0, "0,0")
 
-    tk.Label(window, text="A2 Start Position (row,col):").grid(row=2, column=0)
-    A2_start_entry = tk.Entry(window)
-    A2_start_entry.grid(row=2, column=1)
+    tk.Label(window, text="Agent 2 Start Position (row, col):", font=large_font).grid(row=2, column=0, sticky="e", padx=10, pady=5)
+    A2_start_entry = tk.Entry(window, font=large_font)
+    A2_start_entry.grid(row=2, column=1, padx=10, pady=5)
     A2_start_entry.insert(0, "12,12")
 
-    tk.Label(window, text="A2 Goal Position (row,col):").grid(row=3, column=0)
-    A2_goal_entry = tk.Entry(window)
-    A2_goal_entry.grid(row=3, column=1)
+    tk.Label(window, text="Agent 2 Goal Position (row, col):", font=large_font).grid(row=3, column=0, sticky="e", padx=10, pady=5)
+    A2_goal_entry = tk.Entry(window, font=large_font)
+    A2_goal_entry.grid(row=3, column=1, padx=10, pady=5)
     A2_goal_entry.insert(0, "14,19")
 
     # Create radio buttons for selecting the type of obstacles
     obstacles_var = tk.IntVar(value=1)
-    tk.Radiobutton(window, text="Fixed Obstacles", variable=obstacles_var, value=1).grid(row=4, column=0)
-    tk.Radiobutton(window, text="Random Obstacles", variable=obstacles_var, value=2).grid(row=4, column=1)
+    tk.Radiobutton(window, text="Fixed Obstacles", variable=obstacles_var, value=1, font=large_font).grid(row=4, column=0, padx=10, pady=5)
+    tk.Radiobutton(window, text="Random Obstacles", variable=obstacles_var, value=2, font=large_font).grid(row=4, column=1, padx=10, pady=5)
 
     # Create and place label and entry field for the number of random obstacles
-    tk.Label(window, text="Number of Random Obstacles:").grid(row=5, column=0)
-    num_obstacles_entry = tk.Entry(window)
-    num_obstacles_entry.grid(row=5, column=1)
+    tk.Label(window, text="Number of Random Obstacles:", font=large_font).grid(row=5, column=0, sticky="e", padx=10, pady=5)
+    num_obstacles_entry = tk.Entry(window, font=large_font)
+    num_obstacles_entry.grid(row=5, column=1, padx=10, pady=5)
     num_obstacles_entry.insert(0, "50")
 
     # Create and place the submit button
-    tk.Button(window, text="Submit", command=on_submit).grid(row=6, column=0, columnspan=2)
+    tk.Button(window, text="Submit", command=on_submit, font=large_font).grid(row=6, column=0, columnspan=2, pady=20)
 
     # Start the Tkinter main loop
     window.mainloop()
