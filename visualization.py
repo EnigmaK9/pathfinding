@@ -5,14 +5,14 @@ WIDTH = 400
 HEIGHT = 400
 CELL_SIZE = 20
 
-def draw_all_matrices(matrix_fixed, matrix_random, matrix_fixed_dijkstra, matrix_fixed_a_star, matrix_random_dijkstra, matrix_random_a_star, A1_start_pos, A2_start_pos, A1_goal_pos, A2_goal_pos):
+def draw_matrices(matrix, matrix_dijkstra, matrix_a_star, A1_start_pos, A2_start_pos, A1_goal_pos, A2_goal_pos):
     pygame.init()  # Asegurarse de que pygame esté inicializado
 
-    WINDOW_WIDTH = WIDTH * 3 + 40
+    WINDOW_WIDTH = WIDTH * 2 + 30
     WINDOW_HEIGHT = HEIGHT * 2 + 30
     window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-    pygame.display.set_caption("Pathfinding Comparison - Fixed and Random Obstacles with Dijkstra and A*")
-    
+    pygame.display.set_caption("Pathfinding Comparison")
+
     obstacle_image = pygame.image.load("img/obstaculo.png")
     agent_image = pygame.image.load("img/agente.png")
     agent2_image = pygame.image.load("img/agente2.png")
@@ -36,12 +36,9 @@ def draw_all_matrices(matrix_fixed, matrix_random, matrix_fixed_dijkstra, matrix
     }
 
     matrices = [
-        (matrix_fixed, "Fixed Obstacles", (5, 5)),
-        (matrix_random, "Random Obstacles", (WIDTH + 15, 5)),
-        (matrix_fixed_dijkstra, "Fixed Obstacles Dijkstra", (WIDTH * 2 + 25, 5)),
-        (matrix_fixed_a_star, "Fixed Obstacles A*", (5, HEIGHT + 15)),
-        (matrix_random_dijkstra, "Random Obstacles Dijkstra", (WIDTH + 15, HEIGHT + 15)),
-        (matrix_random_a_star, "Random Obstacles A*", (WIDTH * 2 + 25, HEIGHT + 15))
+        (matrix, "Original Obstacles", (5, 5)),
+        (matrix_dijkstra, "Dijkstra", (WIDTH + 15, 5)),
+        (matrix_a_star, "A*", (5, HEIGHT + 15))
     ]
 
     for matrix, title, pos in matrices:

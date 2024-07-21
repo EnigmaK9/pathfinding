@@ -3,10 +3,13 @@ from obstacles import create_fixed_obstacles, create_random_obstacles
 
 def get_input_data(matrix_fixed, matrix_random, A1_start_pos, A1_goal_pos, A2_start_pos, A2_goal_pos):
     def on_submit():
+        global obstacle_type
         if obstacles_var.get() == 1:
+            obstacle_type = "fixed"
             create_fixed_obstacles(matrix_fixed)
             create_fixed_obstacles(matrix_random)
         else:
+            obstacle_type = "random"
             create_random_obstacles(matrix_fixed, int(num_obstacles_entry.get()))
             create_random_obstacles(matrix_random, int(num_obstacles_entry.get()))
 
@@ -62,3 +65,4 @@ def get_input_data(matrix_fixed, matrix_random, A1_start_pos, A1_goal_pos, A2_st
     tk.Button(window, text="Submit", command=on_submit).grid(row=6, column=0, columnspan=2)
 
     window.mainloop()
+    return obstacle_type
