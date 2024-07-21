@@ -57,9 +57,9 @@ def execute_pathfinding():
 
 def display_results():
     if obstacle_type == "fixed":
-        draw_matrices(matrix_fixed, A1_start_pos, A2_start_pos, A1_goal_pos, A2_goal_pos, path_A1_fixed_dijkstra, path_A2_fixed_dijkstra, path_A1_fixed_a_star, path_A2_fixed_a_star)
+        draw_matrices(matrix_fixed, matrix_fixed_paths_star, A1_start_pos, A2_start_pos, A1_goal_pos, A2_goal_pos, path_A1_fixed_dijkstra, path_A2_fixed_dijkstra, path_A1_fixed_a_star, path_A2_fixed_a_star)
     else:
-        draw_matrices(matrix_random, A1_start_pos, A2_start_pos, A1_goal_pos, A2_goal_pos, path_A1_random_dijkstra, path_A2_random_dijkstra, path_A1_random_a_star, path_A2_random_a_star)
+        draw_matrices(matrix_random, matrix_random_paths_star, A1_start_pos, A2_start_pos, A1_goal_pos, A2_goal_pos, path_A1_random_dijkstra, path_A2_random_dijkstra, path_A1_random_a_star, path_A2_random_a_star)
 
     show_results(path_lengths)
 
