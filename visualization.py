@@ -2,9 +2,9 @@ import pygame
 import sys
 import time
 
-WIDTH = 400
-HEIGHT = 400
-CELL_SIZE = 20
+WIDTH = 500
+HEIGHT = 500
+CELL_SIZE = 25
 
 def draw_matrices(matrix_dijkstra, matrix_a_star, A1_start_pos, A2_start_pos, A1_goal_pos, A2_goal_pos, path_A1_dijkstra, path_A2_dijkstra, path_A1_a_star, path_A2_a_star):
     '''
@@ -77,7 +77,7 @@ def draw_matrices(matrix_dijkstra, matrix_a_star, A1_start_pos, A2_start_pos, A1
 
         # Render the title for each matrix
         font = pygame.font.SysFont("Roboto", 24)
-        title_surface = font.render(title, True, (0, 0, 0))  # Black color for text
+        title_surface = font.render(title, True, (100, 0, 0))  # Black color for text
         title_rect = title_surface.get_rect(center=(x_offset + WIDTH // 2, y_offset + 5))
         window.blit(title_surface, title_rect)
 
@@ -104,7 +104,7 @@ def draw_matrices(matrix_dijkstra, matrix_a_star, A1_start_pos, A2_start_pos, A1
     for idx, (matrix, title, pos) in enumerate(matrices):
         x_offset, y_offset = pos
         font = pygame.font.SysFont("Roboto", 24)
-        title_surface = font.render(title, True, (0, 0, 0))  # Black color for text
+        title_surface = font.render(title, True, (100, 0, 0))  # Black color for text
         title_rect = title_surface.get_rect(center=(x_offset + WIDTH // 2, y_offset + 5))
         window.blit(title_surface, title_rect)
 
