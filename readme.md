@@ -1,4 +1,4 @@
-# 🛤️ Pathfinding Algorithms Comparison (Author: EnigmaK9)
+# 🛤️ Pathfinding Algorithms Comparison
 
 This project demonstrates the comparison between Dijkstra and A\* algorithms for pathfinding in a 20x20 grid environment. The comparison is made for both fixed and random obstacles.
 
@@ -51,16 +51,30 @@ The project visualizes the matrices and paths using Pygame, displaying:
 
 ### 📸 Screenshots
 
-Here are some screenshots of the application in action:
-
-![Screenshot 1](screenshot.png)
-![Screenshot 2](screenshot2.png)
+<p align="center">
+  <img src="screenshot.png" alt="Screenshot 1">
+  <img src="screenshot2.png" alt="Screenshot 2">
+</p>
 
 ## 🧮 Algorithms
 
 ### 🔄 Dijkstra's Algorithm
 
 Dijkstra's algorithm is implemented to find the shortest path in a grid. It uses a priority queue to explore the neighboring cells and updates the shortest distance found so far.
+
+The algorithm works as follows:
+
+1. Initialize the distance to the start node \( S \) as 0, and all other nodes as \( \infty \).
+2. Set the start node \( S \) as the current node.
+3. For the current node \( u \), update the distance to its neighbors \( v \) as \( \text{dist}(u) + \text{weight}(u, v) \) if this is smaller than the current known distance to \( v \).
+4. Mark the current node \( u \) as visited and select the unvisited node with the smallest tentative distance as the new current node.
+5. Repeat steps 3 and 4 until all nodes have been visited or the smallest tentative distance among the unvisited nodes is \( \infty \).
+
+The distance update formula is:
+
+$$
+\text{dist}(v) = \min(\text{dist}(v), \text{dist}(u) + \text{weight}(u, v))
+$$
 
 ### ⭐ A\* Algorithm
 
@@ -69,6 +83,18 @@ A\* algorithm combines the features of Dijkstra's algorithm and a heuristic to i
 $$
 h(x) = |x_1 - x_2| + |y_1 - y_2|
 $$
+
+The total cost function in A\* is given by:
+
+$$
+f(x) = g(x) + h(x)
+$$
+
+where:
+
+- \( f(x) \) is the total cost function.
+- \( g(x) \) is the cost from the start node to the current node.
+- \( h(x) \) is the estimated cost from the current node to the goal node.
 
 ## 🛠️ Code Modularization
 
@@ -105,18 +131,14 @@ The code is modularized into several files to improve maintainability and readab
 
 The results of the pathfinding algorithms are displayed in a Tkinter window, showing the path lengths for each scenario:
 
-$$
-\begin{align*}
-\text{Fixed Obstacles Dijkstra - A1 Path Length:} & \, \text{path\_length} \\
-\text{Fixed Obstacles Dijkstra - A2 Path Length:} & \, \text{path\_length} \\
-\text{Fixed Obstacles A* - A1 Path Length:} & \, \text{path\_length} \\
-\text{Fixed Obstacles A* - A2 Path Length:} & \, \text{path\_length} \\
-\text{Random Obstacles Dijkstra - A1 Path Length:} & \, \text{path\_length} \\
-\text{Random Obstacles Dijkstra - A2 Path Length:} & \, \text{path\_length} \\
-\text{Random Obstacles A* - A1 Path Length:} & \, \text{path\_length} \\
-\text{Random Obstacles A* - A2 Path Length:} & \, \text{path\_length} \\
-\end{align*}
-$$
+- **Fixed Obstacles Dijkstra - A1 Path Length**: path_length
+- **Fixed Obstacles Dijkstra - A2 Path Length**: path_length
+- **Fixed Obstacles A\* - A1 Path Length**: path_length
+- **Fixed Obstacles A\* - A2 Path Length**: path_length
+- **Random Obstacles Dijkstra - A1 Path Length**: path_length
+- **Random Obstacles Dijkstra - A2 Path Length**: path_length
+- **Random Obstacles A\* - A1 Path Length**: path_length
+- **Random Obstacles A\* - A2 Path Length**: path_length
 
 ## 📜 Conclusion
 
@@ -125,3 +147,7 @@ This project provides a comprehensive comparison between Dijkstra and A\* algori
 ## 📄 License
 
 This project is licensed under the MIT License.
+
+## 👤 Author
+
+EnigmaK9
