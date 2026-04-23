@@ -1,96 +1,71 @@
+import customtkinter as ctk
 import tkinter as tk
-from tkinter import font as tkFont
 from obstacles import create_fixed_obstacles, create_random_obstacles
 
-def get_input_data(matrix_fixed, matrix_random, A1_start_pos, A1_goal_pos, A2_start_pos, A2_goal_pos):
-    '''
-    This function sets up the Tkinter GUI to collect user input for the start and goal positions of two agents,
-    as well as the type of obstacles (fixed or random) to be placed in the matrices.
-    '''
+def get_input_data():
+    data = {}
     
-    def on_submit():
-        '''
-        This function is called when the user submits the form. It processes the input data, 
-        creates obstacles in the matrices, and sets the start and goal positions for the agents.
-        '''
-        global obstacle_type
+    # Set appearance mode and color theme
+    ctk.set_appearance_mode("System")  # Modes: "System", "Dark", "Light"
+    ctk.set_default_color_theme("blue")  # Themes: "blue", "green", "dark-blue"
+
+    root = ctk.CTk()
+    root.title("Pathfinding Config")
+    root.geometry("500x400")
+    
+    # Make the root window grid responsive
+    root.grid_columnconfigure(0, weight=1)
+    root.grid_rowconfigure(0, weight=1)
+
+    # Main container frame
+    main_frame = ctk.CTkFrame(root)
+    main_frame.grid(row=0, column=0, padx=20, pady=20, sticky="nsew")
+    
+    # Configure inner frame columns to expand
+    main_frame.grid_columnconfigure(1, weight=1)
+
+    fields = [
+        ("A1 Start (r,c)", "10,10"), 
+        ("A1 Goal (r,c)", "0,0"), 
+        ("A2 Start (r,c)", "12,12"), 
+        ("A2 Goal (r,c)", "14,19")
+    ]
+    entries = []
+
+    # Title Label
+    title_lbl = ctk.CTkLabel(main_frame, text="Simulation Parameters", font=ctk.CTkFont(size=20, weight="bold"))
+    title_lbl.grid(row=0, column=0, columnspan=2, padx=10, pady=(20, 15))
+
+    # Generate input fields dynamically
+    for i, (label, default) in enumerate(fields, start=1):
+        lbl = ctk.CTkLabel(main_frame, text=label, font=ctk.CTkFont(size=14))
+        lbl.grid(row=i, column=0, padx=20, pady=10, sticky="w")
         
-        # Determine the type of obstacles based on user selection and create them in the matrices
-        if obstacles_var.get() == 1:
-            obstacle_type = "fixed"
-            create_fixed_obstacles(matrix_fixed)
-            create_fixed_obstacles(matrix_random)
-        else:
-            obstacle_type = "random"
-            create_random_obstacles(matrix_fixed, int(num_obstacles_entry.get()))
-            create_random_obstacles(matrix_random, int(num_obstacles_entry.get()))
+        ent = ctk.CTkEntry(main_frame, font=ctk.CTkFont(size=14))
+        ent.insert(0, default)
+        ent.grid(row=i, column=1, padx=20, pady=10, sticky="ew")
+        entries.append(ent)
 
-        # Set the start and goal positions for agents A1 and A2
-        A1_start_pos[:] = list(map(int, A1_start_entry.get().split(',')))
-        A1_goal_pos[:] = list(map(int, A1_goal_entry.get().split(',')))
-        A2_start_pos[:] = list(map(int, A2_start_entry.get().split(',')))
-        A2_goal_pos[:] = list(map(int, A2_goal_entry.get().split(',')))
+    # Radio buttons for obstacle type
+    obs_var = tk.IntVar(value=1)
+    radio_frame = ctk.CTkFrame(main_frame, fg_color="transparent")
+    radio_frame.grid(row=5, column=0, columnspan=2, pady=20)
+    
+    ctk.CTkRadioButton(radio_frame, text="Fixed Obstacles", variable=obs_var, value=1, font=ctk.CTkFont(size=14)).pack(side="left", padx=15)
+    ctk.CTkRadioButton(radio_frame, text="Random Obstacles", variable=obs_var, value=2, font=ctk.CTkFont(size=14)).pack(side="left", padx=15)
 
-        # Update the matrices to mark the start and goal positions
-        matrix_fixed[A1_start_pos[0]][A1_start_pos[1]] = 2
-        matrix_fixed[A2_start_pos[0]][A2_start_pos[1]] = 3
-        matrix_fixed[A1_goal_pos[0]][A1_goal_pos[1]] = 5
-        matrix_fixed[A2_goal_pos[0]][A2_goal_pos[1]] = 6
+    def submit():
+        # Retrieve and parse data on submit
+        data['p1_s'] = tuple(map(int, entries[0].get().split(',')))
+        data['p1_g'] = tuple(map(int, entries[1].get().split(',')))
+        data['p2_s'] = tuple(map(int, entries[2].get().split(',')))
+        data['p2_g'] = tuple(map(int, entries[3].get().split(',')))
+        data['obs_type'] = "fixed" if obs_var.get() == 1 else "random"
+        root.destroy()
 
-        matrix_random[A1_start_pos[0]][A1_start_pos[1]] = 2
-        matrix_random[A2_start_pos[0]][A2_start_pos[1]] = 3
-        matrix_random[A1_goal_pos[0]][A1_goal_pos[1]] = 5
-        matrix_random[A2_goal_pos[0]][A2_goal_pos[1]] = 6
+    # Submit Button
+    submit_btn = ctk.CTkButton(main_frame, text="Start Simulation", font=ctk.CTkFont(size=15, weight="bold"), command=submit, height=40)
+    submit_btn.grid(row=6, column=0, columnspan=2, padx=20, pady=(10, 20), sticky="ew")
 
-        # Close the input window
-        window.destroy()
-
-    # Create the main window
-    window = tk.Tk()
-    window.title("Input Configuration")
-
-    # Increase window size and center it on the screen
-    window.geometry("800x400")
-    window.eval('tk::PlaceWindow . center')
-
-    # Set Roboto font size
-    large_font = tkFont.Font(family="Roboto", size=18)
-
-    # Create and place labels and entry fields for the start and goal positions of agents A1 and A2
-    tk.Label(window, text="Agent 1 Start Position (row, col):", font=large_font).grid(row=0, column=0, sticky="e", padx=10, pady=5)
-    A1_start_entry = tk.Entry(window, font=large_font)
-    A1_start_entry.grid(row=0, column=1, padx=10, pady=5)
-    A1_start_entry.insert(0, "10,10")
-
-    tk.Label(window, text="Agent 1 Goal Position (row, col):", font=large_font).grid(row=1, column=0, sticky="e", padx=10, pady=5)
-    A1_goal_entry = tk.Entry(window, font=large_font)
-    A1_goal_entry.grid(row=1, column=1, padx=10, pady=5)
-    A1_goal_entry.insert(0, "0,0")
-
-    tk.Label(window, text="Agent 2 Start Position (row, col):", font=large_font).grid(row=2, column=0, sticky="e", padx=10, pady=5)
-    A2_start_entry = tk.Entry(window, font=large_font)
-    A2_start_entry.grid(row=2, column=1, padx=10, pady=5)
-    A2_start_entry.insert(0, "12,12")
-
-    tk.Label(window, text="Agent 2 Goal Position (row, col):", font=large_font).grid(row=3, column=0, sticky="e", padx=10, pady=5)
-    A2_goal_entry = tk.Entry(window, font=large_font)
-    A2_goal_entry.grid(row=3, column=1, padx=10, pady=5)
-    A2_goal_entry.insert(0, "14,19")
-
-    # Create radio buttons for selecting the type of obstacles
-    obstacles_var = tk.IntVar(value=1)
-    tk.Radiobutton(window, text="Fixed Obstacles", variable=obstacles_var, value=1, font=large_font).grid(row=4, column=0, padx=10, pady=5)
-    tk.Radiobutton(window, text="Random Obstacles", variable=obstacles_var, value=2, font=large_font).grid(row=4, column=1, padx=10, pady=5)
-
-    # Create and place label and entry field for the number of random obstacles
-    tk.Label(window, text="Number of Random Obstacles:", font=large_font).grid(row=5, column=0, sticky="e", padx=10, pady=5)
-    num_obstacles_entry = tk.Entry(window, font=large_font)
-    num_obstacles_entry.grid(row=5, column=1, padx=10, pady=5)
-    num_obstacles_entry.insert(0, "50")
-
-    # Create and place the submit button
-    tk.Button(window, text="Submit", command=on_submit, font=large_font).grid(row=6, column=0, columnspan=2, pady=20)
-
-    # Start the Tkinter main loop
-    window.mainloop()
-    return obstacle_type
+    root.mainloop()
+    return data
