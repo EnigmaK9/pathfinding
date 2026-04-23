@@ -1,71 +1,63 @@
 import customtkinter as ctk
-import tkinter as tk
-from obstacles import create_fixed_obstacles, create_random_obstacles
+from tkinter import messagebox
 
 def get_input_data():
     data = {}
     
     # Set appearance mode and color theme
-    ctk.set_appearance_mode("System")  # Modes: "System", "Dark", "Light"
-    ctk.set_default_color_theme("blue")  # Themes: "blue", "green", "dark-blue"
+    ctk.set_appearance_mode("System")
+    ctk.set_default_color_theme("blue")
 
     root = ctk.CTk()
     root.title("Pathfinding Config")
-    root.geometry("500x400")
+    root.geometry("400x300")
     
     # Make the root window grid responsive
     root.grid_columnconfigure(0, weight=1)
-    root.grid_rowconfigure(0, weight=1)
 
     # Main container frame
     main_frame = ctk.CTkFrame(root)
     main_frame.grid(row=0, column=0, padx=20, pady=20, sticky="nsew")
-    
-    # Configure inner frame columns to expand
-    main_frame.grid_columnconfigure(1, weight=1)
-
-    fields = [
-        ("A1 Start (r,c)", "10,10"), 
-        ("A1 Goal (r,c)", "0,0"), 
-        ("A2 Start (r,c)", "12,12"), 
-        ("A2 Goal (r,c)", "14,19")
-    ]
-    entries = []
+    main_frame.grid_columnconfigure(0, weight=1)
 
     # Title Label
-    title_lbl = ctk.CTkLabel(main_frame, text="Simulation Parameters", font=ctk.CTkFont(size=20, weight="bold"))
-    title_lbl.grid(row=0, column=0, columnspan=2, padx=10, pady=(20, 15))
-
-    # Generate input fields dynamically
-    for i, (label, default) in enumerate(fields, start=1):
-        lbl = ctk.CTkLabel(main_frame, text=label, font=ctk.CTkFont(size=14))
-        lbl.grid(row=i, column=0, padx=20, pady=10, sticky="w")
-        
-        ent = ctk.CTkEntry(main_frame, font=ctk.CTkFont(size=14))
-        ent.insert(0, default)
-        ent.grid(row=i, column=1, padx=20, pady=10, sticky="ew")
-        entries.append(ent)
+    title_lbl = ctk.CTkLabel(main_frame, text="Simulation Settings", font=ctk.CTkFont(size=20, weight="bold"))
+    title_lbl.grid(row=0, column=0, pady=(20, 10))
 
     # Radio buttons for obstacle type
-    obs_var = tk.IntVar(value=1)
+    obs_var = ctk.IntVar(value=1)
     radio_frame = ctk.CTkFrame(main_frame, fg_color="transparent")
-    radio_frame.grid(row=5, column=0, columnspan=2, pady=20)
+    radio_frame.grid(row=1, column=0, pady=10)
     
-    ctk.CTkRadioButton(radio_frame, text="Fixed Obstacles", variable=obs_var, value=1, font=ctk.CTkFont(size=14)).pack(side="left", padx=15)
-    ctk.CTkRadioButton(radio_frame, text="Random Obstacles", variable=obs_var, value=2, font=ctk.CTkFont(size=14)).pack(side="left", padx=15)
+    ctk.CTkRadioButton(radio_frame, text="Fixed", variable=obs_var, value=1).pack(side="left", padx=10)
+    ctk.CTkRadioButton(radio_frame, text="Random", variable=obs_var, value=2).pack(side="left", padx=10)
+
+    # Number of obstacles input
+    obs_lbl = ctk.CTkLabel(main_frame, text="Random Obstacles (Min 40):")
+    obs_lbl.grid(row=2, column=0, pady=(10, 0))
+
+    obs_entry = ctk.CTkEntry(main_frame)
+    obs_entry.insert(0, "40")
+    obs_entry.grid(row=3, column=0, pady=(0, 15))
 
     def submit():
-        # Retrieve and parse data on submit
-        data['p1_s'] = tuple(map(int, entries[0].get().split(',')))
-        data['p1_g'] = tuple(map(int, entries[1].get().split(',')))
-        data['p2_s'] = tuple(map(int, entries[2].get().split(',')))
-        data['p2_g'] = tuple(map(int, entries[3].get().split(',')))
+        # Validate that at least 40 obstacles are generated if 'Random' is selected
+        try:
+            obs_count = int(obs_entry.get())
+        except ValueError:
+            obs_count = 0
+
+        if obs_var.get() == 2 and obs_count < 40:
+            messagebox.showwarning("Warning", "Please enter at least 40 obstacles to proceed.")
+            return
+
         data['obs_type'] = "fixed" if obs_var.get() == 1 else "random"
+        data['obs_count'] = obs_count
         root.destroy()
 
     # Submit Button
-    submit_btn = ctk.CTkButton(main_frame, text="Start Simulation", font=ctk.CTkFont(size=15, weight="bold"), command=submit, height=40)
-    submit_btn.grid(row=6, column=0, columnspan=2, padx=20, pady=(10, 20), sticky="ew")
+    submit_btn = ctk.CTkButton(main_frame, text="Continue to Placement", font=ctk.CTkFont(size=15, weight="bold"), command=submit, height=40)
+    submit_btn.grid(row=4, column=0, pady=20)
 
     root.mainloop()
     return data
