@@ -2,70 +2,50 @@ import heapq
 from utils import neighbors, manhattan, get_path
 
 def Dijkstra(matrix, start, goal):
-    '''
-    Implements Dijkstra's algorithm to find the shortest path in a grid.
-    
-    Parameters:
-    matrix (list of lists): The 20x20 grid where the pathfinding takes place.
-    start (tuple): The starting position (row, col) in the grid.
-    goal (tuple): The goal position (row, col) in the grid.
-    
-    Returns:
-    list: The shortest path from start to goal as a list of tuples.
-    '''
-    queue = []
-    heapq.heappush(queue, (0, start))  # Initialize the priority queue with the start position
-    visited = {}  # Dictionary to keep track of visited nodes and their distances
-    visited[start] = 0
-    path = {}  # Dictionary to store the path to each node
-    path[start] = [start]
+    queue = [(0, start)]
+    g_cost = {start: 0}
+    visited = []
+    visited_set = set()
     
     while queue:
-        current = heapq.heappop(queue)[1]  # Get the node with the smallest distance
-        for neighbor in neighbors(matrix, current):
-            if neighbor not in visited:
-                if matrix[neighbor[0]][neighbor[1]] == 1:  # Skip obstacles
-                    continue
-                distance = visited[current] + 1
-                if neighbor not in visited or distance < visited[neighbor]:
-                    visited[neighbor] = distance
-                    path[neighbor] = path[current] + [neighbor]
-                    heapq.heappush(queue, (distance, neighbor))
+        dist, current = heapq.heappop(queue)
+        if current not in visited_set:
+            visited_set.add(current)
+            visited.append(current)
+            
         if current == goal:
-            return path[current]  # Return the path once the goal is reached
-    return None
+            return get_path(g_cost, start, goal, matrix), visited
+        
+        for n in neighbors(matrix, current):
+            if matrix[n[0]][n[1]] == 1: 
+                continue
+            new_cost = g_cost[current] + 1
+            if n not in g_cost or new_cost < g_cost[n]:
+                g_cost[n] = new_cost
+                heapq.heappush(queue, (new_cost, n))
+    return [], visited
 
 def A_star(matrix, start, goal):
-    '''
-    Implements the A* algorithm to find the shortest path in a grid using a heuristic.
-    
-    Parameters:
-    matrix (list of lists): The 20x20 grid where the pathfinding takes place.
-    start (tuple): The starting position (row, col) in the grid.
-    goal (tuple): The goal position (row, col) in the grid.
-    
-    Returns:
-    list: The shortest path from start to goal as a list of tuples.
-    '''
-    open_list = []
-    closed_list = []
-    heapq.heappush(open_list, (0, 0, start))  # Initialize the priority queue with the start position
-    g_cost = {start: 0}  # Dictionary to keep track of the cost from start to each node
-    f_cost = {start: manhattan(start, goal)}  # Dictionary to keep track of the total cost (g + h)
+    open_list = [(manhattan(start, goal), 0, start)]
+    g_cost = {start: 0}
+    visited = []
+    visited_set = set()
     
     while open_list:
-        f, g, current = heapq.heappop(open_list)  # Get the node with the smallest f value
-        closed_list.append(current)
+        f, g, current = heapq.heappop(open_list)
+        if current not in visited_set:
+            visited_set.add(current)
+            visited.append(current)
+            
         if current == goal:
-            return get_path(matrix, current, g_cost, start)  # Return the path once the goal is reached
+            return get_path(g_cost, start, goal, matrix), visited
         
-        for neighbor in neighbors(matrix, current):
-            if neighbor in closed_list or matrix[neighbor[0]][neighbor[1]] == 1:  # Skip obstacles and closed nodes
+        for n in neighbors(matrix, current):
+            if matrix[n[0]][n[1]] == 1: 
                 continue
-            temp_g = g + 1
-            if neighbor not in [i[2] for i in open_list] or temp_g < g_cost[neighbor]:
-                g_cost[neighbor] = temp_g
-                f = temp_g + manhattan(neighbor, goal)
-                heapq.heappush(open_list, (f, temp_g, neighbor))
-    
-    return None
+            new_g = g + 1
+            if n not in g_cost or new_g < g_cost[n]:
+                g_cost[n] = new_g
+                f_score = new_g + manhattan(n, goal)
+                heapq.heappush(open_list, (f_score, new_g, n))
+    return [], visited

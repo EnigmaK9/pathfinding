@@ -1,69 +1,49 @@
-import sys
-import pygame
-from pathfinding import Dijkstra, A_star
-from utils import print_path, mark_paths
-from visualization import draw_matrices
 from input_data import get_input_data
-from results import show_results
+from obstacles import create_fixed_obstacles, create_random_obstacles
+from pathfinding import Dijkstra, A_star
+from visualization import draw_matrices, interactive_placement
 
-pygame.init()  # Initialize pygame
+def main():
+    while True:
+        # 1. Get user configuration
+        config = get_input_data()
+        if not config: 
+            break
 
-matrix_fixed = []
-matrix_random = []
-A1_start_pos = []
-A1_goal_pos = []
-A2_start_pos = []
-A2_goal_pos = []
+        # 2. Setup matrices and generate obstacles FIRST
+        grid_d = [[0 for _ in range(20)] for _ in range(20)]
+        grid_a = [[0 for _ in range(20)] for _ in range(20)]
+        
+        if config['obs_type'] == "fixed":
+            create_fixed_obstacles(grid_d)
+            create_fixed_obstacles(grid_a)
+        else:
+            create_random_obstacles(grid_d, config['obs_count'])
+            # Clone layout for A* so they share the exact same grid
+            for r in range(20):
+                for c in range(20):
+                    grid_a[r][c] = grid_d[r][c]
 
-obstacle_type = None
+        # 3. Interactive Agent Placement (User clicks on grid)
+        p1_s, p1_g, p2_s, p2_g = interactive_placement(grid_d)
 
-path_lengths = []  # List to store path lengths
+        # 4. Execute pathfinding algorithms
+        path_d1, visited_d1 = Dijkstra(grid_d, p1_s, p1_g)
+        path_d2, visited_d2 = Dijkstra(grid_d, p2_s, p2_g)
+        
+        path_a1, visited_a1 = A_star(grid_a, p1_s, p1_g)
+        path_a2, visited_a2 = A_star(grid_a, p2_s, p2_g)
 
-def configure_matrices():
-    global matrix_fixed, matrix_random, A1_start_pos, A1_goal_pos, A2_start_pos, A2_goal_pos, matrix_fixed_paths_star, matrix_random_paths_star, obstacle_type
-    matrix_fixed = [[0 for _ in range(20)] for _ in range(20)]
-    matrix_random = [[0 for _ in range(20)] for _ in range(20)]
-    obstacle_type = get_input_data(matrix_fixed, matrix_random, A1_start_pos, A1_goal_pos, A2_start_pos, A2_goal_pos)
-    matrix_fixed_paths_star = [row[:] for row in matrix_fixed]
-    matrix_random_paths_star = [row[:] for row in matrix_random]
-
-def execute_pathfinding():
-    global path_A1_fixed_dijkstra, path_A2_fixed_dijkstra, path_A1_fixed_a_star, path_A2_fixed_a_star
-    global path_A1_random_dijkstra, path_A2_random_dijkstra, path_A1_random_a_star, path_A2_random_a_star
-
-    path_A1_fixed_dijkstra = Dijkstra(matrix_fixed, tuple(A1_start_pos), tuple(A1_goal_pos))
-    path_A2_fixed_dijkstra = Dijkstra(matrix_fixed, tuple(A2_start_pos), tuple(A2_goal_pos))
-
-    path_lengths.append(len(path_A1_fixed_dijkstra) if path_A1_fixed_dijkstra else 0)
-    path_lengths.append(len(path_A2_fixed_dijkstra) if path_A2_fixed_dijkstra else 0)
-
-    path_A1_fixed_a_star = A_star(matrix_fixed_paths_star, tuple(A1_start_pos), tuple(A1_goal_pos))
-    path_A2_fixed_a_star = A_star(matrix_fixed_paths_star, tuple(A2_start_pos), tuple(A2_goal_pos))
-
-    path_lengths.append(len(path_A1_fixed_a_star) if path_A1_fixed_a_star else 0)
-    path_lengths.append(len(path_A2_fixed_a_star) if path_A2_fixed_a_star else 0)
-
-    path_A1_random_dijkstra = Dijkstra(matrix_random, tuple(A1_start_pos), tuple(A1_goal_pos))
-    path_A2_random_dijkstra = Dijkstra(matrix_random, tuple(A2_start_pos), tuple(A2_goal_pos))
-
-    path_lengths.append(len(path_A1_random_dijkstra) if path_A1_random_dijkstra else 0)
-    path_lengths.append(len(path_A2_random_dijkstra) if path_A2_random_dijkstra else 0)
-
-    path_A1_random_a_star = A_star(matrix_random_paths_star, tuple(A1_start_pos), tuple(A1_goal_pos))
-    path_A2_random_a_star = A_star(matrix_random_paths_star, tuple(A2_start_pos), tuple(A2_goal_pos))
-
-    path_lengths.append(len(path_A1_random_a_star) if path_A1_random_a_star else 0)
-    path_lengths.append(len(path_A2_random_a_star) if path_A2_random_a_star else 0)
-
-def display_results():
-    if obstacle_type == "fixed":
-        draw_matrices(matrix_fixed, matrix_fixed_paths_star, A1_start_pos, A2_start_pos, A1_goal_pos, A2_goal_pos, path_A1_fixed_dijkstra, path_A2_fixed_dijkstra, path_A1_fixed_a_star, path_A2_fixed_a_star)
-    else:
-        draw_matrices(matrix_random, matrix_random_paths_star, A1_start_pos, A2_start_pos, A1_goal_pos, A2_goal_pos, path_A1_random_dijkstra, path_A2_random_dijkstra, path_A1_random_a_star, path_A2_random_a_star)
-
-    show_results(path_lengths)
+        # 5. Visualize Results
+        # Returns True if 'R' is pressed, False if ESC/Close is pressed
+        restart = draw_matrices(grid_d, grid_a, 
+                                p1_s, p2_s, 
+                                p1_g, p2_g,
+                                path_d1, path_d2, path_a1, path_a2,
+                                visited_d1, visited_d2, visited_a1, visited_a2)
+        
+        if not restart:
+            break
 
 if __name__ == "__main__":
-    configure_matrices()
-    execute_pathfinding()
-    display_results()
+    main()
