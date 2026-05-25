@@ -4,11 +4,17 @@ from utils import neighbors, manhattan, get_path
 def Dijkstra(matrix, start, goal):
     queue = [(0, start)]
     g_cost = {start: 0}
+    visited = []
+    visited_set = set()
     
     while queue:
         dist, current = heapq.heappop(queue)
+        if current not in visited_set:
+            visited_set.add(current)
+            visited.append(current)
+            
         if current == goal:
-            return get_path(g_cost, start, goal, matrix)
+            return get_path(g_cost, start, goal, matrix), visited
         
         for n in neighbors(matrix, current):
             if matrix[n[0]][n[1]] == 1: 
@@ -17,16 +23,22 @@ def Dijkstra(matrix, start, goal):
             if n not in g_cost or new_cost < g_cost[n]:
                 g_cost[n] = new_cost
                 heapq.heappush(queue, (new_cost, n))
-    return []
+    return [], visited
 
 def A_star(matrix, start, goal):
     open_list = [(manhattan(start, goal), 0, start)]
     g_cost = {start: 0}
+    visited = []
+    visited_set = set()
     
     while open_list:
         f, g, current = heapq.heappop(open_list)
+        if current not in visited_set:
+            visited_set.add(current)
+            visited.append(current)
+            
         if current == goal:
-            return get_path(g_cost, start, goal, matrix)
+            return get_path(g_cost, start, goal, matrix), visited
         
         for n in neighbors(matrix, current):
             if matrix[n[0]][n[1]] == 1: 
@@ -36,4 +48,4 @@ def A_star(matrix, start, goal):
                 g_cost[n] = new_g
                 f_score = new_g + manhattan(n, goal)
                 heapq.heappush(open_list, (f_score, new_g, n))
-    return []
+    return [], visited

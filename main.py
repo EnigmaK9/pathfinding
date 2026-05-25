@@ -28,18 +28,19 @@ def main():
         p1_s, p1_g, p2_s, p2_g = interactive_placement(grid_d)
 
         # 4. Execute pathfinding algorithms
-        path_d1 = Dijkstra(grid_d, p1_s, p1_g)
-        path_d2 = Dijkstra(grid_d, p2_s, p2_g)
+        path_d1, visited_d1 = Dijkstra(grid_d, p1_s, p1_g)
+        path_d2, visited_d2 = Dijkstra(grid_d, p2_s, p2_g)
         
-        path_a1 = A_star(grid_a, p1_s, p1_g)
-        path_a2 = A_star(grid_a, p2_s, p2_g)
+        path_a1, visited_a1 = A_star(grid_a, p1_s, p1_g)
+        path_a2, visited_a2 = A_star(grid_a, p2_s, p2_g)
 
         # 5. Visualize Results
         # Returns True if 'R' is pressed, False if ESC/Close is pressed
         restart = draw_matrices(grid_d, grid_a, 
                                 p1_s, p2_s, 
                                 p1_g, p2_g,
-                                path_d1, path_d2, path_a1, path_a2)
+                                path_d1, path_d2, path_a1, path_a2,
+                                visited_d1, visited_d2, visited_a1, visited_a2)
         
         if not restart:
             break
